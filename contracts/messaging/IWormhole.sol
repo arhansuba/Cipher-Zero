@@ -1,7 +1,8 @@
 // contracts/Messages.sol
 // SPDX-License-Identifier: Apache 2
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.26;
+
 
 import "./Structs.sol";
 

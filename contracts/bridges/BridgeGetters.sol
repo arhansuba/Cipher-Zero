@@ -1,7 +1,8 @@
 // contracts/Getters.sol
 // SPDX-License-Identifier: Apache 2
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.26;
+
 
 interface BridgeGetters {
     function governanceActionIsConsumed(bytes32 hash) external view returns (bool) ;
