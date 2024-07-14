@@ -1,0 +1,19 @@
+{
+  "name": "bitthetasecure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "soljson-v0.8.7+commit.e28d00a7.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "leveldown": "^6.1.1",
+    "truffle": "^5.11.5"
+  }
+}

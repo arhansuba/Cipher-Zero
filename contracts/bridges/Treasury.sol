@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-//If the below line shows an error, ignore it, it's cause you're root folder is not chains/evm. 
-import "@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol";
+
 import "../bridges/ITokenBridge.sol";
 import "../bridges/PortalWrappedToken.sol";
+import "../bridges/ERC20PresetMinterPauser.sol";
 
 contract Treasury {
 
