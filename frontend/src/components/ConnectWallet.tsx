@@ -1,29 +1,39 @@
-import { FC, useEffect } from "react";
-import { useWallet } from "@thetablockchain/wallet-adapter-react";
-import { useWalletModal } from "@theta-blockchain/wallet-adapter-react";
-import React from "react";
+import React, { FC, useEffect, useCallback } from 'react';
+import { useWallet, WalletContextState } from '@thetablockchain/wallet-adapter-react';
+import { useWalletModal } from '@theta-blockchain/wallet-adapter-react';
+import { Button, Spinner, Toast } from 'react-bootstrap'; // Example UI library for buttons and spinners
+import { ErrorBoundary } from './ErrorBoundary'; // Custom Error Boundary Component
 
-type Props = {
+interface ConnectWalletProps {
   onUseWalletClick: () => void;
-};
+}
 
-export const ConnectWallet: FC<Props> = ({
-  onUseWalletClick,
-}) => {
+/**
+ * ConnectWallet component provides an interface to connect a Theta wallet.
+ * It handles connecting, displaying connection status, and error management.
+ */
+export const ConnectWallet: FC<ConnectWalletProps> = ({ onUseWalletClick }) => {
   const { setVisible } = useWalletModal();
-  const { wallet, connect, connecting, publicKey } = useWallet();
+  const { wallet, connect, connecting, publicKey, disconnect } = useWallet();
 
+  // Effect to auto-connect if publicKey is not available but wallet exists
   useEffect(() => {
-    if (!publicKey && wallet) {
-      try {
-        connect();
-      } catch (error) {
-        console.log("Error connecting to the wallet: ", (error as any).message);
+    const autoConnect = async () => {
+      if (!publicKey && wallet) {
+        try {
+          await connect();
+        } catch (error) {
+          console.error('Error connecting to the wallet:', error);
+          Toast.error(`Error connecting to wallet: ${error.message}`);
+        }
       }
-    }
-  }, [wallet]);
+    };
 
-  const handleWalletClick = () => {
+    autoConnect();
+  }, [wallet, publicKey, connect]);
+
+  // Handle wallet click actions
+  const handleWalletClick = useCallback(() => {
     try {
       if (!wallet) {
         setVisible(true);
@@ -32,17 +42,29 @@ export const ConnectWallet: FC<Props> = ({
       }
       onUseWalletClick();
     } catch (error) {
-      console.log("Error connecting to the wallet: ", (error as any).message);
+      console.error('Error handling wallet click:', error);
+      Toast.error(`Error handling wallet click: ${error.message}`);
     }
-  };
+  }, [wallet, connect, setVisible, onUseWalletClick]);
 
   return (
-    <button
-      className="btn btn-primary btn-lg"
-      onClick={handleWalletClick}
-      disabled={connecting}
-    >
-      {publicKey ? <div>Use Wallet Address</div> : <div>Connect Wallet</div>}
-    </button>
+    <ErrorBoundary>
+      <Button
+        variant="primary"
+        size="lg"
+        onClick={handleWalletClick}
+        disabled={connecting}
+      >
+        {connecting ? (
+          <div>
+            <Spinner animation="border" size="sm" /> Connecting...
+          </div>
+        ) : publicKey ? (
+          <div>Wallet Connected: {publicKey.toBase58()}</div>
+        ) : (
+          <div>Connect Wallet</div>
+        )}
+      </Button>
+    </ErrorBoundary>
   );
 };

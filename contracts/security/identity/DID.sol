@@ -10,6 +10,58 @@ import "./_setupRole.sol";
  * @title DID
  * @dev This contract manages Decentralized Identifiers (DIDs) and their associated identities.
  */
+
+contract DIDSystem {
+
+    struct Identity {
+        string did;  // Decentralized Identifier
+        string publicKey;  // Public Key
+        string document;  // DID Document
+    }
+
+    mapping(address => Identity) private identities;
+    mapping(string => address) private didToAddress;
+
+    event IdentityRegistered(address indexed owner, string did);
+    event IdentityUpdated(address indexed owner, string did);
+
+    function registerIdentity(string memory _did, string memory _publicKey, string memory _document) public {
+        require(bytes(identities[msg.sender].did).length == 0, "Identity already exists for this address");
+        require(didToAddress[_did] == address(0), "DID already registered");
+
+        identities[msg.sender] = Identity({
+            did: _did,
+            publicKey: _publicKey,
+            document: _document
+        });
+
+        didToAddress[_did] = msg.sender;
+
+        emit IdentityRegistered(msg.sender, _did);
+    }
+
+    function updateIdentity(string memory _did, string memory _publicKey, string memory _document) public {
+        require(bytes(identities[msg.sender].did).length != 0, "Identity does not exist for this address");
+        require(keccak256(abi.encodePacked(identities[msg.sender].did)) == keccak256(abi.encodePacked(_did)), "DID mismatch");
+
+        identities[msg.sender].publicKey = _publicKey;
+        identities[msg.sender].document = _document;
+
+        emit IdentityUpdated(msg.sender, _did);
+    }
+
+    function getIdentity(address _owner) public view returns (string memory, string memory, string memory) {
+        Identity memory identity = identities[_owner];
+        return (identity.did, identity.publicKey, identity.document);
+    }
+
+    function getIdentityByDID(string memory _did) public view returns (string memory, string memory, string memory) {
+        address owner = didToAddress[_did];
+        Identity memory identity = identities[owner];
+        return (identity.did, identity.publicKey, identity.document);
+    }
+}
+
 contract DID is AccessControl {
     using ECDSA for bytes32;
     using Strings for string;

@@ -16,7 +16,7 @@ import {
   import solana from "@wormhole-foundation/sdk/solana";
   import sui from "@wormhole-foundation/sdk/sui";
   
-  import { SignerStuff, getSigner, waitLog } from "./helpers/index.js";
+  import { SignerStuff, getSigner, waitLog } from "./helpers/helpers";
   
   (async function () {
     // Init Wormhole object, passing config for which network

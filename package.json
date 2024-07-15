@@ -12,9 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mui/icons-material": "^5.16.1",
+    "@mui/material": "^5.16.1",
     "@openzeppelin/contracts": "^5.0.2",
+    "@thetalabs/theta-js": "^0.0.86",
     "@types/next": "^9.0.0",
+    "axios": "^1.7.2",
+    "ethers": "^6.13.1",
     "leveldown": "^6.1.1",
+    "react-bootstrap": "^2.10.4",
     "solc": "^0.8.26",
     "truffle": "^5.11.5"
   },
