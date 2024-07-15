@@ -2,12 +2,11 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
-import { NetworkConfig } from '../config/NetworkConfig'; // Import NetworkConfig
-import { contractConfig } from '../config/contractConfig'; // Import contractConfig
+import { contractConfig } from '../config/contractConfig';
 
 // Define the shape of the context state
 interface ThetaContextType {
-  provider: ethers.providers.Web3Provider | null;
+  provider: ethers.providers.JsonRpcProvider | null;
   signer: ethers.Signer | null;
   contract: ethers.Contract | null;
   initializeTheta: () => Promise<void>;
@@ -18,7 +17,7 @@ const ThetaContext = createContext<ThetaContextType | undefined>(undefined);
 
 // Context provider component
 export const ThetaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
+  const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider | null>(null);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
 
@@ -27,11 +26,11 @@ export const ThetaProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const initializeTheta = async () => {
       try {
         // Create a new provider using the configured URL
-        const newProvider = new ethers.providers.JsonRpcProvider(NetworkConfig.providerUrl);
+        const newProvider = new ethers.JsonRpcProvider(networkConfigs.mainnet.providerUrl);
         setProvider(newProvider);
 
         // Create a signer instance
-        const newSigner = newProvider.getSigner();
+        const newSigner = await newProvider.getSigner();
         setSigner(newSigner);
 
         // Create a contract instance using the ABI and contract address
@@ -52,10 +51,10 @@ export const ThetaProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   // Function to re-initialize provider, signer, and contract
   const reinitializeTheta = async () => {
     try {
-      const newProvider = new ethers.providers.JsonRpcProvider(NetworkConfig.providerUrl);
+      const newProvider = new ethers.JsonRpcProvider(networkConfigs.mainnet.providerUrl);
       setProvider(newProvider);
 
-      const newSigner = newProvider.getSigner();
+      const newSigner = await newProvider.getSigner();
       setSigner(newSigner);
 
       const contractInstance = new ethers.Contract(

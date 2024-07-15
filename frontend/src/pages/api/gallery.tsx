@@ -1,18 +1,25 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { GalleryView } from "../../views";
+import { GalleryView } from "../views";
 import React from "react";
 
-const Home: NextPage = (props: any) => {
+// Define the props interface if needed. Replace `any` with a more specific type.
+interface GalleryProps {
+  // Define any specific props if required
+}
+
+const Gallery: NextPage<GalleryProps> = (props: GalleryProps) => {
   return (
-    <div>
+    <>
       <Head>
-        <title>File Transfer  </title>
-        <meta name="description" content="file" />
+        <title>File Transfer</title>
+        <meta name="description" content="File Transfer Gallery" />
       </Head>
-      <GalleryView />
-    </div>
+      <main>
+        <GalleryView />
+      </main>
+    </>
   );
 };
 
-export default Home;
+export default Gallery;

@@ -1,212 +1,182 @@
 import * as fs from 'fs';
-import { exec } from "child_process";
-import { getEmitterAddressEth, getEmitterAddressSolana, parseSequenceFromLogEth, setDefaultWasm } from '@certusone/wormhole-sdk';
-import * as ethers from 'ethers';
+import { exec } from 'child_process';
+import { getEmitterAddressEth, getEmitterAddressSolana, parseSequenceFromLogEth } from '@certusone/wormhole-sdk';
+import { ethers } from 'ethers';
 import fetch from 'node-fetch';
 
-const config = JSON.parse(fs.readFileSync('./xdapp.config.json').toString());
+const config = JSON.parse(fs.readFileSync('./xdapp.config.json', 'utf-8'));
 
-export async function deploy(chain: string){
-    const rpc = config.networks[chain]['rpc'];
-    const privateKey = config.networks[chain]['privateKey'];
- 
-    exec(
-        `cd chains/evm && forge build && forge create --legacy --rpc-url ${rpc} --private-key ${privateKey} src/Messenger.sol:Messenger && exit`,
-        (err, out, errStr) => {
-            if (err) {
-                throw new Error(err.message);
-            }
+async function deploy(chain: string) {
+    const { rpc, privateKey } = config.networks[chain];
 
-            if (out) {
-                console.log(out);
-                const deploymentAddress = out
-                    .split("Deployed to: ")[1]
-                    .split("\n")[0]
-                    .trim();
-                const emittedVAAs = []; //Resets the emittedVAAs
-                fs.writeFileSync(
-                    `./deployinfo/${chain}.deploy.json`,
-                    JSON.stringify({
-                        address: deploymentAddress,
-                        vaas: emittedVAAs
-                    }, null, 4)
-                );
+    return new Promise<void>((resolve, reject) => {
+        exec(
+            `cd chains/evm && forge build && forge create --legacy --rpc-url ${rpc} --private-key ${privateKey} src/Messenger.sol:Messenger && exit`,
+            (err, stdout, stderr) => {
+                if (err) {
+                    return reject(new Error(`Deployment failed: ${err.message}`));
+                }
+
+                if (stderr) {
+                    console.error(stderr);
+                }
+
+                if (stdout) {
+                    console.log(stdout);
+                    const deploymentAddress = stdout
+                        .split("Deployed to: ")[1]
+                        .split("\n")[0]
+                        .trim();
+                    const emittedVAAs = []; // Resets the emittedVAAs
+                    fs.writeFileSync(
+                        `./deployinfo/${chain}.deploy.json`,
+                        JSON.stringify({ address: deploymentAddress, vaas: emittedVAAs }, null, 4)
+                    );
+                    resolve();
+                }
             }
-        }
-    );
+        );
+    });
 }
 
-export async function registerApp(src:string, target:string){
+async function registerApp(src: string, target: string) {
     const srcNetwork = config.networks[src];
     const targetNetwork = config.networks[target];
+
     let srcDeploymentInfo;
     let targetDeploymentInfo;
-    let targetEmitter;
 
-
-    try{
-        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`).toString());
-    } catch (e){
+    try {
+        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`, 'utf-8'));
+    } catch {
         throw new Error(`${src} is not deployed yet`);
     }
 
-    try{
-        targetDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${target}.deploy.json`).toString());
-    } catch (e){
+    try {
+        targetDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${target}.deploy.json`, 'utf-8'));
+    } catch {
         throw new Error(`${target} is not deployed yet`);
     }
 
-    switch (targetNetwork['type']){
-        case 'evm': 
-            targetEmitter = getEmitterAddressEth(targetDeploymentInfo['address']);
+    let targetEmitter;
+    switch (targetNetwork.type) {
+        case 'evm':
+            targetEmitter = getEmitterAddressEth(targetDeploymentInfo.address);
             break;
         case 'solana':
-            setDefaultWasm("node"); // *sigh*
-            targetEmitter = await getEmitterAddressSolana(targetDeploymentInfo['address']);
+            setDefaultWasm("node"); // Required for Solana
+            targetEmitter = await getEmitterAddressSolana(targetDeploymentInfo.address);
             break;
+        default:
+            throw new Error(`Unsupported network type: ${targetNetwork.type}`);
     }
 
     const emitterBuffer = Buffer.from(targetEmitter, 'hex');
-    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(
-        new ethers.providers.JsonRpcProvider(srcNetwork.rpc)
-    );
+    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(new ethers.JsonRpcProvider(srcNetwork.rpc));
     const messenger = new ethers.Contract(
         srcDeploymentInfo.address,
-        JSON.parse(
-            fs
-                .readFileSync(
-                    "./chains/evm/out/Messenger.sol/Messenger.json"
-                )
-                .toString()
-        ).abi,
+        JSON.parse(fs.readFileSync('./chains/evm/out/Messenger.sol/Messenger.json', 'utf-8')).abi,
         signer
     );
-    const tx = await messenger.registerApplicationContracts(
-        targetNetwork.wormholeChainId,
-        emitterBuffer
-    );
-    return tx;
+
+    return await messenger.registerApplicationContracts(targetNetwork.wormholeChainId, emitterBuffer);
 }
 
-export async function sendMsg(src:string, msg:string){
+async function sendMsg(src: string, msg: string) {
     const srcNetwork = config.networks[src];
     let srcDeploymentInfo;
-    try{
-        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`).toString());
-    } catch (e){
+
+    try {
+        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`, 'utf-8'));
+    } catch {
         throw new Error(`${src} is not deployed yet`);
     }
-    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(
-        new ethers.providers.JsonRpcProvider(srcNetwork.rpc)
-    );
+
+    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(new ethers.JsonRpcProvider(srcNetwork.rpc));
     const messenger = new ethers.Contract(
         srcDeploymentInfo.address,
-        JSON.parse(
-            fs
-                .readFileSync(
-                    "./chains/evm/out/Messenger.sol/Messenger.json"
-                )
-                .toString()
-        ).abi,
+        JSON.parse(fs.readFileSync('./chains/evm/out/Messenger.sol/Messenger.json', 'utf-8')).abi,
         signer
     );
 
-    const tx = await (await messenger.sendMsg(Buffer.from(msg))).wait();
-    const seq = parseSequenceFromLogEth(tx, srcNetwork['bridgeAddress']);
-    const emitterAddr = getEmitterAddressEth(srcDeploymentInfo['address']);
-    
+    const tx = await messenger.sendMsg(Buffer.from(msg));
+    const receipt = await tx.wait();
+    const seq = parseSequenceFromLogEth(receipt, srcNetwork.bridgeAddress);
+    const emitterAddr = getEmitterAddressEth(srcDeploymentInfo.address);
 
-    await new Promise((r) => setTimeout(r, 5000)); //wait for Guardian to pick up message
-    console.log(
-        "Searching for: ",
-        `${config.wormhole.restAddress}/v1/signed_vaa/${srcNetwork.wormholeChainId}/${emitterAddr}/${seq}`
-    );
-    const vaaBytes = await (
-        await fetch(
-            `${config.wormhole.restAddress}/v1/signed_vaa/${srcNetwork.wormholeChainId}/${emitterAddr}/${seq}`
-        )
-    ).json();
+    await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for Guardian to pick up the message
 
-    if(!vaaBytes['vaaBytes']){
+    const response = await fetch(`${config.wormhole.restAddress}/v1/signed_vaa/${srcNetwork.wormholeChainId}/${emitterAddr}/${seq}`);
+    const vaaBytes = await response.json();
+
+    if (!vaaBytes.vaaBytes) {
         throw new Error("VAA not found!");
     }
 
-    if(!srcDeploymentInfo['vaas']){
-        srcDeploymentInfo['vaas'] = [vaaBytes['vaaBytes']]
-    } else {
-        srcDeploymentInfo['vaas'].push(vaaBytes['vaaBytes'])
-    }
+    srcDeploymentInfo.vaas = srcDeploymentInfo.vaas || [];
+    srcDeploymentInfo.vaas.push(vaaBytes.vaaBytes);
+
     fs.writeFileSync(
         `./deployinfo/${src}.deploy.json`,
         JSON.stringify(srcDeploymentInfo, null, 4)
     );
-    return vaaBytes['vaaBytes'];
+
+    return vaaBytes.vaaBytes;
 }
 
-export async function submitVaa(src:string, target:string, idx:string){
+async function submitVaa(src: string, target: string, idx: string) {
     const srcNetwork = config.networks[src];
     let srcDeploymentInfo;
     let targetDeploymentInfo;
 
-    try{
-        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`).toString());
-    } catch (e){
+    try {
+        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`, 'utf-8'));
+    } catch {
         throw new Error(`${src} is not deployed yet`);
     }
 
-    try{
-        targetDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${target}.deploy.json`).toString());
-    } catch (e){
+    try {
+        targetDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${target}.deploy.json`, 'utf-8'));
+    } catch {
         throw new Error(`${target} is not deployed yet`);
     }
 
     const vaa = isNaN(parseInt(idx))
-    ? targetDeploymentInfo.vaas.pop()
-    : targetDeploymentInfo.vaas[parseInt(idx)];
+        ? targetDeploymentInfo.vaas.pop()
+        : targetDeploymentInfo.vaas[parseInt(idx)];
 
-    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(
-        new ethers.providers.JsonRpcProvider(srcNetwork.rpc)
-    );
+    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(new ethers.JsonRpcProvider(srcNetwork.rpc));
     const messenger = new ethers.Contract(
         srcDeploymentInfo.address,
-        JSON.parse(
-            fs
-                .readFileSync(
-                    "./chains/evm/out/Messenger.sol/Messenger.json"
-                )
-                .toString()
-        ).abi,
+        JSON.parse(fs.readFileSync('./chains/evm/out/Messenger.sol/Messenger.json', 'utf-8')).abi,
         signer
     );
-    const tx = await messenger.receiveEncodedMsg(Buffer.from(vaa, "base64"));
 
-    return tx;
+    return await messenger.receiveEncodedMsg(Buffer.from(vaa, 'base64'));
 }
 
-export async function getCurrentMsg(src:string){
+async function getCurrentMsg(src: string) {
     const srcNetwork = config.networks[src];
     let srcDeploymentInfo;
 
-    try{
-        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`).toString());
-    } catch (e){
+    try {
+        srcDeploymentInfo = JSON.parse(fs.readFileSync(`./deployinfo/${src}.deploy.json`, 'utf-8'));
+    } catch {
         throw new Error(`${src} is not deployed yet`);
     }
-    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(
-        new ethers.providers.JsonRpcProvider(srcNetwork.rpc)
-    );
 
+    const signer = new ethers.Wallet(srcNetwork.privateKey).connect(new ethers.JsonRpcProvider(srcNetwork.rpc));
     const messenger = new ethers.Contract(
         srcDeploymentInfo.address,
-        JSON.parse(
-            fs
-                .readFileSync(
-                    "./chains/evm/out/Messenger.sol/Messenger.json"
-                )
-                .toString()
-        ).abi,
+        JSON.parse(fs.readFileSync('./chains/evm/out/Messenger.sol/Messenger.json', 'utf-8')).abi,
         signer
     );
-    
+
     return await messenger.getCurrentMsg();
-}  
+}
+
+export { deploy, registerApp, sendMsg, submitVaa, getCurrentMsg };
+    function setDefaultWasm(arg0: string) {
+        throw new Error('Function not implemented.');
+    }
+

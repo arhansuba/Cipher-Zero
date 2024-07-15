@@ -1,14 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import HomeView from "../views/HomeView.tsx";
+import HomeView from "../views/HomeView";
 import React from "react";
 
 const Home: NextPage = () => {
     return (
         <>
             <Head>
-                <title>zk Lokomotive</title>
-                <meta name="description" content="" />
+                <title>BitThetaSecure</title>
+                <meta name="description" content="Welcome to BitThetaSecure, your gateway to secure blockchain solutions." />
             </Head>
             <HomeView />
         </>
