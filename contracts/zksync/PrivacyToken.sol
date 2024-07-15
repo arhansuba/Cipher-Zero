@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @title PrivacyToken
  * @dev ERC20 token with additional privacy-focused features.
  */
-contract PrivacyToken is ERC20, Ownable {
+contract PrivacyToken is ERC20("TokenName", "TKN"), Ownable {
     // Mapping to store user-specific privacy metadata
     mapping(address => string) private _userMetadata;
 
@@ -18,11 +18,9 @@ contract PrivacyToken is ERC20, Ownable {
     event MetadataUpdated(address indexed user, string newMetadata);
 
     /**
-     * @dev Constructor that initializes the token with a name and symbol.
-     * @param name The name of the token.
-     * @param symbol The symbol of the token.
+     * @dev Constructor that initializes the token.
      */
-    constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
+    constructor() ERC20("TokenName", "TKN") Ownable() {}
 
     /**
      * @dev Mint new tokens to a specified address.

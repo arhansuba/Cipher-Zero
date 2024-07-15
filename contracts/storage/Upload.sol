@@ -4,7 +4,8 @@ pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "./Counters.sol";
+
 
 /**
  * @title Upload
@@ -40,9 +41,9 @@ contract Upload is AccessControl {
     event FileRemoved(bytes32 indexed fileId);
 
     constructor() {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(ADMIN_ROLE, msg.sender);
-        _setupRole(UPLOADER_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(UPLOADER_ROLE, msg.sender);
     }
 
     /**

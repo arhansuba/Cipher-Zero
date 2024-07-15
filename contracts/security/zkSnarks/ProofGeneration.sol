@@ -4,14 +4,12 @@ pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "openzeppelin-contracts/contracts/cryptography/EIP712.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
 interface IProofVerifier {
@@ -26,7 +24,7 @@ interface IProofVerifier {
  * @dev This contract is responsible for generating zk-SNARKs proofs for transactions and data validation.
  */
 contract ProofGeneration is AccessControl, EIP712 {
-    using SafeMath for uint256;
+    using Math for uint256;
     using Strings for string;
 
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
@@ -37,7 +35,7 @@ contract ProofGeneration is AccessControl, EIP712 {
     event ProofGenerated(address indexed user, string proofId);
 
     constructor(string memory name, string memory version, address _proofVerifier) EIP712(name, version) {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         proofVerifier = IProofVerifier(_proofVerifier);
     }
 

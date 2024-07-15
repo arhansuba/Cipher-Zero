@@ -1,2 +1,2 @@
-export * from "./helpers.js";
-export type { SignerStuff } from "./helpers.js";
+export * from "./helpers.ts";
+export type { SignerStuff } from "./helpers.ts";

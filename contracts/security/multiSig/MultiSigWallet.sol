@@ -3,8 +3,6 @@ pragma solidity ^0.8.26;
 
 
 
-/// @title Multisignature wallet - Allows multiple parties to agree on transactions before execution.
-/// @author Stefan George - <stefan.george@consensys.net>
 contract MultiSigWallet {
 
     /*
@@ -96,7 +94,10 @@ contract MultiSigWallet {
     /// @dev Fallback function allows to deposit ether.
     function()
         payable
-    {
+    receive() external payable {
+        if (msg.value > 0)
+            Deposit(msg.sender, msg.value);
+    }
         if (msg.value > 0)
             Deposit(msg.sender, msg.value);
     }

@@ -3,18 +3,24 @@ pragma solidity ^0.8.26;
 
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@wormhole-foundation/eth-sdk/contracts/bridge/IWormhole.sol";
-import "@wormhole-foundation/eth-sdk/contracts/bridge/WormholeBridge.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
+import "./IWormhole.sol";
+
+struct Message {
+    address token;
+    uint256 amount;
+    uint16 destinationChainId;
+    address destinationAddress;
+}
 
 /**
  * @title InteroperabilityManager
  * @dev Manages cross-chain interactions using Wormhole and other cross-chain technologies.
  */
 contract InteroperabilityManager is AccessControl, Pausable {
-    using SafeMath for uint256;
+    using Math for uint256;
 
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant BRIDGE_ROLE = keccak256("BRIDGE_ROLE");
@@ -28,9 +34,9 @@ contract InteroperabilityManager is AccessControl, Pausable {
     event TokenReceived(address indexed token, uint256 amount, address indexed sender);
 
     constructor(address _wormhole, address _wormholeBridge) {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(ADMIN_ROLE, msg.sender);
-        _setupRole(BRIDGE_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(BRIDGE_ROLE, msg.sender);
 
         wormhole = IWormhole(_wormhole);
         wormholeBridge = _wormholeBridge;
@@ -47,7 +53,7 @@ contract InteroperabilityManager is AccessControl, Pausable {
         IERC20(token).transferFrom(msg.sender, address(this), amount);
 
         // Prepare Wormhole message
-        WormholeBridge.Message memory message = WormholeBridge.Message({
+        IWormhole.Message memory message = IWormhole.Message({
             token: token,
             amount: amount,
             destinationChainId: destinationChainId,

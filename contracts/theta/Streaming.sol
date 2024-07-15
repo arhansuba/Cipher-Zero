@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "./Counters.sol";
 
 /**
  * @title Streaming
@@ -44,9 +44,9 @@ contract Streaming is AccessControl {
      * @dev Initializes the contract and sets up the roles.
      */
     constructor() {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(ADMIN_ROLE, msg.sender);
-        _setupRole(STREAMER_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(STREAMER_ROLE, msg.sender);
     }
 
     /**

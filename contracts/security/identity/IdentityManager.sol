@@ -4,12 +4,14 @@ pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712Domain.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "./_setupRole.sol";
 /**
  * @title IdentityManager
  * @dev This contract manages identities using Decentralized Identifiers (DIDs) and associated metadata.
- */
+contract IdentityManager is AccessControl, EIP712Domain {
 contract IdentityManager is AccessControl {
     using ECDSA for bytes32;
     using Strings for string;
@@ -30,7 +32,7 @@ contract IdentityManager is AccessControl {
     mapping(string => string) private _didMetadata;
 
     constructor() {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     /**
@@ -86,9 +88,8 @@ contract IdentityManager is AccessControl {
      */
     function verifyDIDSignature(string calldata did, bytes calldata signature, string calldata message) external view onlyRole(VERIFY_ROLE) returns (bool) {
         address owner = _didOwners[did];
-        require(owner != address(0), "IdentityManager: DID not found");
-        bytes32 messageHash = keccak256(abi.encodePacked(did, message));
-        return messageHash.toEthSignedMessageHash().recover(signature) == owner;
+        bytes32 messageHash = EIP712.hashMessage(keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", Strings.toString(bytes(message).length), message)));
+        return messageHash.recover(signature) == owner;
     }
 
     /**

@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
+    "@types/next": "^9.0.0",
     "leveldown": "^6.1.1",
     "solc": "^0.8.26",
     "truffle": "^5.11.5"

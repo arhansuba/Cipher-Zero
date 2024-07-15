@@ -5,11 +5,11 @@ pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract TNT20 is ERC20, AccessControl, Pausable {
-    using SafeMath for uint256;
+    using Math for uint256;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
@@ -32,9 +32,9 @@ contract TNT20 is ERC20, AccessControl, Pausable {
         _mint(initDistrWallet, initMintAmount);
         admin = adminAddr;
         mintingCap = cap;
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddr);
-        _setupRole(MINTER_ROLE, adminAddr);
-        _setupRole(BURNER_ROLE, adminAddr);
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddr);
+        _grantRole(MINTER_ROLE, adminAddr);
+        _grantRole(BURNER_ROLE, adminAddr);
         emit UpdateAdmin(admin);
     }
 
@@ -44,7 +44,7 @@ contract TNT20 is ERC20, AccessControl, Pausable {
      */
     function updateAdmin(address newAdmin) external onlyRole(DEFAULT_ADMIN_ROLE) {
         admin = newAdmin;
-        _setupRole(DEFAULT_ADMIN_ROLE, newAdmin);
+        _grantRole(DEFAULT_ADMIN_ROLE, newAdmin);
         emit UpdateAdmin(newAdmin);
     }
 
@@ -54,7 +54,7 @@ contract TNT20 is ERC20, AccessControl, Pausable {
      * @param amount The amount of tokens to mint.
      */
     function mint(address receiver, uint256 amount) external onlyRole(MINTER_ROLE) whenNotPaused {
-        require(totalSupply().add(amount) <= mintingCap, "TNT20: Minting cap exceeded");
+        require(Math.add(totalSupply(), amount) <= mintingCap, "TNT20: Minting cap exceeded");
         _mint(receiver, amount);
         emit Mint(receiver, amount);
     }

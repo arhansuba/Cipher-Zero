@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-
-
+import "@openzeppelin/contracts/utils/math/Math.sol";
+import "./IWormhole.sol";
+import "./WormholeBridge.sol";
 /**
  * @title CrossChainToken
  * @dev A token that supports cross-chain transfers using Wormhole.
@@ -29,9 +30,9 @@ contract CrossChainToken is ERC20, AccessControl, Pausable {
         address _wormholeBridge,
         address _wormholeTokenBridge
     ) ERC20(name, symbol) {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(MINTER_ROLE, msg.sender);
-        _setupRole(PAUSER_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
+        _grantRole(PAUSER_ROLE, msg.sender);
 
         wormhole = IWormhole(_wormhole);
         wormholeBridge = _wormholeBridge;

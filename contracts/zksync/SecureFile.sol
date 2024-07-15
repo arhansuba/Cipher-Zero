@@ -103,11 +103,7 @@ contract SecureFile is Ownable {
         emit FileUpdated(fileId, newFileHash);
     }
 
-    /**
-     * @dev Get details of a file.
-     * @param fileId The ID of the file.
-     * @return The file's metadata.
-     */
+   
     function getFile(uint256 fileId) external view returns (
         string memory fileName,
         string memory fileHash,

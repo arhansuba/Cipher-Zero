@@ -5,7 +5,7 @@ pragma solidity ^0.8.26;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "./_setupRole.sol";
 /**
  * @title DID
  * @dev This contract manages Decentralized Identifiers (DIDs) and their associated identities.
@@ -26,7 +26,7 @@ contract DID is AccessControl {
     mapping(string => address) private _didOwners;
 
     constructor() {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     /**

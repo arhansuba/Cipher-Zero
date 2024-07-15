@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "./Counters.sol";
 import "./Storage.sol";
 
 /**
@@ -45,9 +45,9 @@ contract Delivery is AccessControl {
      * @param storageAddress The address of the Storage contract.
      */
     constructor(address storageAddress) {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(ADMIN_ROLE, msg.sender);
-        _setupRole(DELIVERY_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(DELIVERY_ROLE, msg.sender);
         _storage = IStorage(storageAddress);
     }
 

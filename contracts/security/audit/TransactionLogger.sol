@@ -3,7 +3,7 @@ pragma solidity ^0.8.26;
 
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-
+import "./_setupRole.sol";
 /**
  * @title TransactionLogger
  * @dev This contract logs transaction details for auditing and monitoring purposes.
@@ -32,8 +32,8 @@ contract TransactionLogger is AccessControl {
     }
 
     constructor() {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(AUDITOR_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(AUDITOR_ROLE, msg.sender);
     }
 
     /**
@@ -72,8 +72,8 @@ contract TransactionLogger is AccessControl {
         bytes memory details
     ) {
         require(index < transactionCount, "TransactionLogger: Index out of bounds");
-        Transaction memory tx = transactions[index];
-        return (tx.sender, tx.receiver, tx.amount, tx.timestamp, tx.details);
+        Transaction memory transaction = transactions[index];
+        return (transaction.sender, transaction.receiver, transaction.amount, transaction.timestamp, transaction.details);
     }
 
     /**
