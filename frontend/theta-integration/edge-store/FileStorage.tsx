@@ -1,4 +1,3 @@
-import { ethers } from 'ethers';
 
 // Function to generate authentication token
 const generateAuthToken = async (address: string): Promise<string> => {

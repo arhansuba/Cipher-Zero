@@ -1,27 +1,26 @@
-//import { providers } from 'ethers';
+import { ethers } from "ethers";
 
-// Define types and interfaces if needed
+// Define types and interfaces
 interface WalletProvider {
   request: (args: { method: string; params?: any[] }) => Promise<any>;
   isThetaWallet?: boolean;
 }
 
 interface CustomWindow extends Window {
-  ethereum?: any;
+  ethereum?: WalletProvider;
 }
 
 declare const window: CustomWindow;
 
 // Detect if the Theta Wallet provider is available
 export function isThetaWalletProvider(): boolean {
-  const windowAny = window as any;
-  return Boolean(windowAny.ethereum && windowAny.ethereum.isThetaWallet);
+  return Boolean(window.ethereum && window.ethereum.isThetaWallet);
 }
 
 // Initialize the provider
-export function getProvider(): providers.Web3Provider | null {
+export function getProvider(): ethers.BrowserProvider | null {
   if (isThetaWalletProvider()) {
-    return new providers.Web3Provider(window.ethereum as unknown as WalletProvider);
+    return new ethers.BrowserProvider(window.ethereum as any);
   }
   console.warn('Theta Wallet provider is not available');
   return null;
@@ -47,7 +46,7 @@ export async function signMessage(message: string): Promise<string | null> {
   const provider = getProvider();
   if (provider) {
     try {
-      const signer = provider.getSigner();
+      const signer = await provider.getSigner();
       const signature = await signer.signMessage(message);
       return signature;
     } catch (error) {
@@ -59,14 +58,14 @@ export async function signMessage(message: string): Promise<string | null> {
 }
 
 // Sign a transaction using the Theta Wallet
-export async function signTransaction(contractAddress: string, contractABI: any, functionName: string, ...args: any[]): Promise<any> {
+export async function signTransaction(contractAddress: string, contractABI: ethers.InterfaceAbi, functionName: string, ...args: any[]): Promise<ethers.TransactionResponse | null> {
   const provider = getProvider();
   if (provider) {
     try {
-      const signer = provider.getSigner();
-      const contract = new providers.Contract(contractAddress, contractABI, signer);
-      const result = await contract[functionName](...args);
-      return result;
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      const tx = await contract[functionName](...args);
+      return tx;
     } catch (error) {
       console.error('Error signing transaction:', error);
       return null;
@@ -77,10 +76,7 @@ export async function signTransaction(contractAddress: string, contractABI: any,
 
 // Example usage function to demonstrate the usage of the wallet methods
 export async function exampleUsage() {
-  const windowAny = window as any;
-  const isThetaWallet = Boolean(windowAny.ethereum && windowAny.ethereum.isThetaWallet);
-
-  if (isThetaWallet) {
+  if (isThetaWalletProvider()) {
     console.log('Theta Wallet provider is available');
 
     // Auto-connect and show the user as logged in
@@ -103,8 +99,14 @@ export async function exampleUsage() {
     const contractABI = []; // Replace with actual ABI
     const functionName = 'someFunctionInYourContract';
 
-    const transactionResult = await signTransaction(contractAddress, contractABI, functionName, /* arguments */);
-    console.log('Transaction Result:', transactionResult);
+    const transactionResponse = await signTransaction(contractAddress, contractABI, functionName /* arguments */);
+    if (transactionResponse) {
+      console.log('Transaction Hash:', transactionResponse.hash);
+      await transactionResponse.wait(); // Wait for the transaction to be mined
+      console.log('Transaction confirmed');
+    } else {
+      console.log('Transaction failed');
+    }
   } else {
     console.log('Theta Wallet provider is not available');
   }

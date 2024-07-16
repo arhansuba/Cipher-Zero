@@ -4,14 +4,13 @@ import { ethers } from 'ethers';
 export class WalletUtils {
   // Check if the Theta Wallet provider is available
   public static isThetaWalletProvider(): boolean {
-    const windowAny = window as any;
-    return Boolean(windowAny.ethereum && windowAny.ethereum.isThetaWallet);
+    return Boolean(window.ethereum && (window.ethereum as any).isThetaWallet);
   }
 
-  // Create a Web3 provider instance if Theta Wallet is available
-  public static createProvider(): ethers.providers.Web3Provider | null {
+  // Create a BrowserProvider instance if Theta Wallet is available
+  public static createProvider(): ethers.BrowserProvider | null {
     if (WalletUtils.isThetaWalletProvider()) {
-      return new ethers.providers.Web3Provider((window as any).ethereum);
+      return new ethers.BrowserProvider(window.ethereum as any);
     }
     console.warn('Theta Wallet provider is not available');
     return null;
@@ -37,7 +36,7 @@ export class WalletUtils {
     const provider = WalletUtils.createProvider();
     if (provider) {
       try {
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
         const signature = await signer.signMessage(message);
         return signature;
       } catch (error) {
@@ -51,17 +50,17 @@ export class WalletUtils {
   // Sign a transaction and execute it on the smart contract
   public static async signTransaction(
     contractAddress: string,
-    contractABI: any,
+    contractABI: ethers.InterfaceAbi,
     functionName: string,
     ...args: any[]
-  ): Promise<any> {
+  ): Promise<ethers.TransactionResponse | null> {
     const provider = WalletUtils.createProvider();
     if (provider) {
       try {
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddress, contractABI, signer);
-        const result = await contract[functionName](...args);
-        return result;
+        const tx = await contract[functionName](...args);
+        return tx;
       } catch (error) {
         console.error('Error signing transaction:', error);
         return null;

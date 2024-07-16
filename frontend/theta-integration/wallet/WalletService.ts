@@ -1,6 +1,6 @@
-import {  Contract } from 'ethers';
+import { Contract, ethers } from 'ethers';
 
-// Define types and interfaces if needed
+// Define types and interfaces
 interface WalletProvider {
   request: (args: { method: string; params?: any[] }) => Promise<any>;
   isThetaWallet?: boolean;
@@ -14,7 +14,7 @@ declare global {
 
 // Define the WalletService class
 export class WalletService {
-  private provider: providers.Web3Provider | null = null;
+  private provider: ethers.BrowserProvider | null = null;
 
   constructor() {
     this.initializeProvider();
@@ -23,7 +23,7 @@ export class WalletService {
   // Initialize the wallet provider
   private initializeProvider(): void {
     if (this.isThetaWalletProvider()) {
-      this.provider = new providers.Web3Provider(window.ethereum as unknown as WalletProvider);
+      this.provider = new ethers.BrowserProvider(window.ethereum as any);
     } else {
       console.warn('Theta Wallet provider is not available');
     }
@@ -31,8 +31,7 @@ export class WalletService {
 
   // Check if Theta Wallet provider is available
   private isThetaWalletProvider(): boolean {
-    const windowAny = window as any;
-    return Boolean(windowAny.ethereum && windowAny.ethereum.isThetaWallet);
+    return Boolean(window.ethereum && window.ethereum.isThetaWallet);
   }
 
   // Get accounts from the wallet
@@ -53,7 +52,7 @@ export class WalletService {
   public async signMessage(message: string): Promise<string | null> {
     if (this.provider) {
       try {
-        const signer = this.provider.getSigner();
+        const signer = await this.provider.getSigner();
         const signature = await signer.signMessage(message);
         return signature;
       } catch (error) {
@@ -65,13 +64,18 @@ export class WalletService {
   }
 
   // Sign a transaction using the wallet
-  public async signTransaction(contractAddress: string, contractABI: any, functionName: string, ...args: any[]): Promise<any> {
+  public async signTransaction(
+    contractAddress: string,
+    contractABI: ethers.InterfaceAbi,
+    functionName: string,
+    ...args: any[]
+  ): Promise<ethers.TransactionResponse | null> {
     if (this.provider) {
       try {
-        const signer = this.provider.getSigner();
+        const signer = await this.provider.getSigner();
         const contract = new Contract(contractAddress, contractABI, signer);
-        const result = await contract[functionName](...args);
-        return result;
+        const tx = await contract[functionName](...args);
+        return tx;
       } catch (error) {
         console.error('Error signing transaction:', error);
         return null;
