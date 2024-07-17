@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, AuthService } from '../authentication/AuthService'; // Adjust the import path as necessary
+import { User } from '../authentication/AuthService'; // Adjust the import path as necessary
 import { JWTUtils } from '../authentication/JWTUtils'; // Adjust the import path as necessary
+import * as AuthService from '../authentication/AuthService'; // Adjust the import path as necessary
 
-// Define the shape of the context state
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -11,30 +11,28 @@ interface AuthContextType {
   loading: boolean;
 }
 
-// Create the AuthContext with default values
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define the props for the provider component
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Implement the AuthProvider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Check authentication status on component mount
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const token = JWTUtils.getToken(); // Get the token from storage
-        if (token && JWTUtils.isValidToken(token)) { // Check if the token is valid
-          const currentUser = await AuthService.getCurrentUser(); // Fetch current user
-          setUser(currentUser);
+        const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+        if (token && !JWTUtils.isTokenExpired(token)) {
+          const fetchedUser = await AuthService.currentUser();
+          if (fetchedUser) {
+            setUser(fetchedUser);
+          }
         }
       } catch (err) {
-        console.error('Failed to fetch current user:', err.message);
+        console.error('Failed to fetch current user:', err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -43,41 +41,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  // Login function
   const login = async (username: string, password: string) => {
     try {
       const { user: loggedInUser, token } = await AuthService.login(username, password);
-      JWTUtils.setToken(token); // Save the token
+      localStorage.setItem('token', token); // Store token in localStorage
       setUser(loggedInUser);
     } catch (err) {
-      console.error('Login failed:', err.message);
+      console.error('Login failed:', err instanceof Error ? err.message : String(err));
       throw err;
     }
   };
 
-  // Logout function
   const logout = async () => {
     try {
       await AuthService.logout();
-      JWTUtils.removeToken(); // Remove the token
+      localStorage.removeItem('token'); // Remove token from localStorage
       setUser(null);
     } catch (err) {
-      console.error('Logout failed:', err.message);
+      console.error('Logout failed:', err instanceof Error ? err.message : String(err));
       throw err;
     }
   };
 
   const isAuthenticated = user !== null;
 
-  // Provide the context value to children components
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
-      {loading ? <p>Loading...</p> : children}
+      {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use the AuthContext
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {

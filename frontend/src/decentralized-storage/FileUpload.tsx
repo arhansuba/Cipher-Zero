@@ -17,8 +17,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ wallet }) => {
     const [fileId, setFileId] = useState<string | null>(null);
 
     // Initialize the provider and contract
-    const edgeStoreContract = new ethers.Contract(EdgeStoreContractAddress, EdgeStoreContractABI, new ethers.Wallet(wallet.privateKey, provider));innet URL in production
-    const edgeStoreContract = new Contract(EdgeStoreContractAddress, EdgeStoreContractABI, provider);
+    const edgeStoreContract = new ethers.Contract(EdgeStoreContractAddress, EdgeStoreContractABI, new ethers.Wallet(wallet.privateKey, providers));
 
     // Handle file selection
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

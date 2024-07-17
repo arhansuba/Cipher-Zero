@@ -10,7 +10,7 @@ const EDGE_STORE_CONTRACT_ADDRESS = EdgeStoreContractAddress; // Replace with ac
 const EDGE_STORE_ABI = EdgeStoreContractABI; // Replace with actual ABI
 
 // Create a provider and wallet instance
-const provider = new HttpProvider('https://theta.network'); // Replace with the appropriate Theta network URL
+const provider = new HttpProvider(); // Replace with the appropriate Theta network URL
 const wallet = Wallet.createRandom(); // Replace with your wallet initialization
 
 // Initialize EdgeStore contract
@@ -25,7 +25,7 @@ class CustomContract extends Contract {
     }
 }
 
-const edgeStoreContract = new CustomContract(EDGE_STORE_CONTRACT_ADDRESS, EDGE_STORE_ABI, provider);
+const edgeStoreContract = new CustomContract();
 
 interface FileUploadResult {
     fileId: string;
@@ -70,7 +70,7 @@ export const retrieveFileFromEdgeStore = async (fileId: string): Promise<File> =
         } else {
             throw new Error('Invalid file data');
         }
-        return new File([fileBlob], fileId);
+        return new File([], fileId);
     } catch (error) {
         message.error(`Error retrieving file: ${error.message}`);
         throw error;

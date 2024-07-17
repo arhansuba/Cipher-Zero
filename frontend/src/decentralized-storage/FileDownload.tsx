@@ -1,8 +1,7 @@
 // frontend/src/components/FileDownload.tsx
 
 import React, { useState } from 'react';
-import { Contract, providers } from '@thetalabs/theta-js';
-import { EdgeStoreContractABI, EdgeStoreContractAddress } from '../config/EdgeStoreConfig';
+import { providers } from '@thetalabs/theta-js';
 
 // Define the type for the component props
 interface FileDownloadProps {

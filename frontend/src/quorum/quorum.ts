@@ -1,6 +1,4 @@
 import { Chain, api, toChain, wormhole } from "@wormhole-foundation/sdk";
-import algorand from "@wormhole-foundation/sdk/algorand";
-import cosmwasm from "@wormhole-foundation/sdk/cosmwasm";
 import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
 
@@ -39,7 +37,7 @@ const skipChains = [
 // Main function to fetch and process heartbeats
 (async function () {
   // Initialize Wormhole with specified chains
-  const wh = await wormhole("Mainnet", [evm, solana, cosmwasm, algorand]);
+  const wh = await wormhole("Mainnet", [evm, solana]);
 
   // Fetch heartbeats
   const hbc = await getHeartbeats(wh.config.api);

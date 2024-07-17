@@ -4,13 +4,13 @@ import { ethers } from 'ethers';
 export class WalletUtils {
   // Check if the Theta Wallet provider is available
   public static isThetaWalletProvider(): boolean {
-    return Boolean(window.ethereum && (window.ethereum as any).isThetaWallet);
+    return Boolean((window as any).ethereum && (window as any).ethereum.isThetaWallet);
   }
 
   // Create a BrowserProvider instance if Theta Wallet is available
   public static createProvider(): ethers.BrowserProvider | null {
     if (WalletUtils.isThetaWalletProvider()) {
-      return new ethers.BrowserProvider(window.ethereum as any);
+      return new ethers.BrowserProvider((window as any).ethereum);
     }
     console.warn('Theta Wallet provider is not available');
     return null;

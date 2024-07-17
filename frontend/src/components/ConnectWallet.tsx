@@ -1,8 +1,12 @@
 import React, { FC, useEffect, useCallback } from 'react';
-import { useWallet, WalletContextState } from '@thetablockchain/wallet-adapter-react';
-import { useWalletModal } from '@theta-blockchain/wallet-adapter-react';
-import { Button, Spinner, Toast } from 'react-bootstrap'; // Example UI library for buttons and spinners
+//import { useWallet, WalletContextState } from '@thetablockchain/wallet-adapter-react';
+//import { useWalletModal } from '@theta-blockchain/wallet-adapter-react';
+import { Button, Spinner, Toast } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ErrorBoundary } from './ErrorBoundary'; // Custom Error Boundary Component
+import { useWallet } from '@solana/wallet-adapter-react';
+import error from 'next/error';
 
 interface ConnectWalletProps {
   onUseWalletClick: () => void;
@@ -17,20 +21,23 @@ export const ConnectWallet: FC<ConnectWalletProps> = ({ onUseWalletClick }) => {
   const { wallet, connect, connecting, publicKey, disconnect } = useWallet();
 
   // Effect to auto-connect if publicKey is not available but wallet exists
-  useEffect(() => {
-    const autoConnect = async () => {
-      if (!publicKey && wallet) {
-        try {
-          await connect();
-        } catch (error) {
-          console.error('Error connecting to the wallet:', error);
-          Toast.error(`Error connecting to wallet: ${error.message}`);
+    useEffect(() => {
+      const autoConnect = async () => {
+        if (!publicKey && wallet) {
+          try {
+            await connect();
+            toast.error(`Error connecting to wallet: ${error.toString()}`);
+            console.error('Error connecting to the wallet:', error);
+            toast.error(`Error connecting to wallet: ${error.toString()}`);
+          } catch (error: any) {
+            console.error('Error connecting to the wallet:', error);
+            toast.error(`Error connecting to wallet: ${error.toString()}`);
+          }
         }
-      }
-    };
-
-    autoConnect();
-  }, [wallet, publicKey, connect]);
+      };
+  
+      autoConnect();
+    }, [wallet, publicKey, connect]);
 
   // Handle wallet click actions
   const handleWalletClick = useCallback(() => {
@@ -41,9 +48,9 @@ export const ConnectWallet: FC<ConnectWalletProps> = ({ onUseWalletClick }) => {
         connect();
       }
       onUseWalletClick();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error handling wallet click:', error);
-      Toast.error(`Error handling wallet click: ${error.message}`);
+      toast.error(`Error handling wallet click: ${error.message}`);
     }
   }, [wallet, connect, setVisible, onUseWalletClick]);
 
@@ -68,3 +75,7 @@ export const ConnectWallet: FC<ConnectWalletProps> = ({ onUseWalletClick }) => {
     </ErrorBoundary>
   );
 };
+function useWalletModal(): { setVisible: any; } {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,13 +1,15 @@
 import React, { useState, useRef, ChangeEvent, DragEvent } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
+import { Listbox, Transition } from '@headlessui/react';// here is giving error 
 import axios from 'axios';
 import cx from 'classnames';
 // import styles from './video.css';
 import { ethers } from 'ethers';
+import 'video.js/dist/video-js.css';
 
+//import styles from './Video.module.css';
+ import styles from '../Video.module.css';
 
-
-import styles from '../video.css';
+//import styles from './Video.module.css'; // can not import css file from file frontend/theta-integration/video-api/Video.module.css
 
 const Video = () => {
     const resolutions = [2160, 1080, 720, 360];

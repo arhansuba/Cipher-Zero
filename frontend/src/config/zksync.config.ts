@@ -1,14 +1,20 @@
-// zksyncconfig.js
+// zksyncconfig.ts
+import { Wallet, Provider } from 'zksync-web3';
 
-const { Network, Provider, Wallet } = require('zksync');
-const { ethers } = require('ethers');
+interface NetworkConfig {
+    chainId: number;
+    providerUrl: string;
+    explorerUrl: string;
+    contractAddresses: {
+        [key: string]: string;
+    };
+}
 
-// Define a type for zkSync network configurations
-const networkConfigs = {
+const networkConfigs: { [key: string]: NetworkConfig } = {
     mainnet: {
-        network: Network.Mainnet,
-        providerUrl: 'https://zksync2-mainnet.zksync.io',
-        explorerUrl: 'https://zkscan.io',
+        chainId: 324, // zkSync Era Mainnet
+        providerUrl: 'https://mainnet.era.zksync.io',
+        explorerUrl: 'https://explorer.zksync.io',
         contractAddresses: {
             // Define contract addresses specific to zkSync mainnet if needed
             // Example:
@@ -16,9 +22,9 @@ const networkConfigs = {
         },
     },
     testnet: {
-        network: Network.Testnet,
-        providerUrl: 'https://zksync2-testnet.zksync.dev',
-        explorerUrl: 'https://zkscan.io/testnet',
+        chainId: 280, // zkSync Era Testnet (Goerli)
+        providerUrl: 'https://testnet.era.zksync.dev',
+        explorerUrl: 'https://goerli.explorer.zksync.io',
         contractAddresses: {
             // Define contract addresses specific to zkSync testnet if needed
             // Example:
@@ -27,16 +33,14 @@ const networkConfigs = {
     },
 };
 
-// Function to get zkSync provider based on environment
-const getProvider = (network = 'testnet') => {
+const getProvider = (network: string = 'testnet'): Provider => {
     if (!networkConfigs[network]) {
         throw new Error(`Network configuration for ${network} not found.`);
     }
     return new Provider(networkConfigs[network].providerUrl);
 };
 
-// Function to create a zkSync wallet instance
-const getWallet = (privateKey, network = 'testnet') => {
+const getWallet = async (privateKey: string, network: string = 'testnet'): Promise<Wallet> => {
     if (!networkConfigs[network]) {
         throw new Error(`Network configuration for ${network} not found.`);
     }
@@ -44,35 +48,16 @@ const getWallet = (privateKey, network = 'testnet') => {
     return new Wallet(privateKey, provider);
 };
 
-// Function to get zkSync network explorer URL
-const getExplorerUrl = (network = 'testnet') => {
+const getExplorerUrl = (network: string = 'testnet'): string => {
     if (!networkConfigs[network]) {
         throw new Error(`Network configuration for ${network} not found.`);
     }
     return networkConfigs[network].explorerUrl;
 };
 
-// Export configurations and utility functions
-module.exports = {
+export {
     networkConfigs,
     getProvider,
     getWallet,
     getExplorerUrl,
 };
-
-// Export types if using TypeScript
-// export type { NetworkConfig } from './types'; // Define appropriate types in a types file if using TypeScript
-// Define your types and configurations here
-//export const networkConfigs = {
-    // Your network configuration
-//};
-
-// Remove the redeclaration of getProvider
-//export function getProvider(network: string) {
-    // Your implementation here
-//}
-
-// Remove the redeclaration of getExplorerUrl
-// export const getExplorerUrl = (network?: string) => {
-//     // Your implementation here
-// };

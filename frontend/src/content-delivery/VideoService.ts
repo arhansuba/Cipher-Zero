@@ -1,7 +1,7 @@
 // VideoService.ts
 
-//import { ThetaVideoAPIClient } from '@thetalabs/theta-js'; // Adjust import as necessary
-import { config } from '../config/VideoConfig'; // Configuration file for API keys and settings
+import { ThetaVideoAPIClient } from '@thetalabs/theta-js'; // Corrected import statement
+import { videoConfig } from '../config/VideoConfig'; // Corrected typo in import
 
 // Define the TypeScript interfaces for video metadata and upload response
 interface VideoMetadata {
@@ -25,7 +25,8 @@ class VideoService {
 
   constructor() {
     // Initialize Theta Video API client with configuration
-    this.videoAPIClient = new ThetaVideoAPIClient(config.thetaVideoAPIUrl, config.apiKey);
+    // Corrected to use the imported VideoConfig object
+    this.videoAPIClient = new ThetaVideoAPIClient(videoConfig.thetaVideoAPIUrl, videoConfig.apiKey);
   }
 
   /**

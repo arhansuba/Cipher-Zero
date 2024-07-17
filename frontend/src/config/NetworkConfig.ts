@@ -1,7 +1,10 @@
 // src/config/networkConfig.ts
 
+import { FetchRequest } from "ethers/utils";
+
 // Define a type for network configurations
 export interface NetworkConfig {
+    providerUrl: string | FetchRequest | undefined;
     chainId: number;
     rpcUrl: string;
     explorerUrl: string;
@@ -20,6 +23,7 @@ export interface NetworkConfig {
         wormholeBridge: '0xYourWormholeBridgeContractAddress', // Replace with actual Wormhole Bridge contract address
         thetaContract: '0xYourThetaContractAddress', // Replace with actual Theta contract address
       },
+      providerUrl: undefined
     },
     testnet: {
       chainId: 2, // Testnet Chain ID
@@ -29,6 +33,7 @@ export interface NetworkConfig {
         wormholeBridge: '0xYourTestnetWormholeBridgeContractAddress', // Replace with actual testnet Wormhole Bridge contract address
         thetaContract: '0xYourTestnetThetaContractAddress', // Replace with actual testnet Theta contract address
       },
+      providerUrl: undefined
     },
     // Add more networks as needed
   };

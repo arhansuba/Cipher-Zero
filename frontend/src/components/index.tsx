@@ -1,21 +1,33 @@
-// Importing individual components
-import { Loader } from './Loader';
-import { ConnectWallet } from './ConnectWallet';
-import HomeDash from './HomeDash';
-import Delivery from './Delivery';
-import Encryption from './Encryption';
-import FileMailer from './FileMailer';
-import FileTransfer from './FileTransfer';
+// frontend/src/components/HomeDash.d.ts
+declare module 'HomeDash' {
+    const HomeDash: React.ComponentType;
+    export default HomeDash;
+}
 
-// Exporting components for easier imports elsewhere in the project
-export { 
-    Loader, 
-    ConnectWallet, 
-    HomeDash, 
-    Delivery, 
-    Encryption, 
-    FileMailer, 
-    FileTransfer 
-};
+// frontend/src/components/Delivery.d.ts
+declare module 'Delivery' {
+    const Delivery: React.ComponentType;
+    export default Delivery;
+}
 
-// If you have more components to add, include them here in a similar fashion
+// frontend/src/components/Encryption.d.ts
+declare module 'Encryption' {
+    const Encryption: React.ComponentType;
+    export default Encryption;
+}
+
+// frontend/src/components/FileMailer.d.ts
+declare module 'FileMailer' {
+    const FileMailer: React.ComponentType;
+    export default FileMailer;
+}
+
+// frontend/src/components/FileTransfer.d.ts
+declare module 'FileTransfer' {
+    const FileTransfer: React.ComponentType;
+    export default FileTransfer;
+}
+declare module 'WalletUpload' {
+    const WalletUpload: React.ComponentType;
+    export default WalletUpload;
+}

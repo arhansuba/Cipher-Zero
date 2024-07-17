@@ -8,7 +8,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useAlert } from 'react-alert';
 
-const Transfer = () => {
+// Remove the duplicate declaration of 'Transfer' variable
   const [toAddress, setToAddress] = useState('');
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const Transfer = () => {
     } finally {
       setLoading(false);
     }
-  };
+
 
   return (
     <>
@@ -58,7 +58,8 @@ const Transfer = () => {
   );
 };
 
-export default Transfer;
+// Remove the duplicate default export
+// export default Transfer;
 const Transfer = () => {
   const [file, setFile] = useState(null);
   const [recipient, setRecipient] = useState('');

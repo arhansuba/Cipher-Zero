@@ -1,11 +1,10 @@
 // CrossChainService.ts
-
-import { Contract, Wallet } from 'ethers';
+import { Contract, JsonRpcProvider, Provider, TransactionResponse, Wallet, parseUnits } from 'ethers';
 import { BridgeContractABI, BridgeContractAddress } from '../config/BridgeConfig';
 
 // Define a type for the service's configuration
 interface CrossChainServiceConfig {
-  provider: providers.Provider;
+  provider: Provider;
   wallet: Wallet;
 }
 
@@ -26,7 +25,7 @@ export class CrossChainService {
   // Example method to get some data from the contract
   public async getSomeData(): Promise<any> {
     try {
-      const data = await this.contract.myFunction(); // Replace 'myFunction' with your contract's function
+      const data = await this.contract['myFunction'](); // Replace 'myFunction' with your contract's function
       return data;
     } catch (error) {
       console.error('Error getting data from contract:', error);
@@ -35,9 +34,9 @@ export class CrossChainService {
   }
 
   // Example method to send a transaction
-  public async sendTransaction(to: string, amount: utils.BigNumber): Promise<providers.TransactionResponse> {
+  public async sendTransaction(to: string, amount: string): Promise<TransactionResponse> {
     try {
-      const tx = await this.contract.someTransactionFunction(to, amount); // Replace with actual transaction function
+      const tx = await this.contract['someTransactionFunction'](to, amount); // Replace with actual transaction function
       return tx;
     } catch (error) {
       console.error('Error sending transaction:', error);
@@ -46,9 +45,9 @@ export class CrossChainService {
   }
 
   // Example method for handling cross-chain operations
-  public async crossChainTransfer(destinationChainId: number, amount: utils.BigNumber): Promise<providers.TransactionResponse> {
+  public async crossChainTransfer(destinationChainId: number, amount: string): Promise<TransactionResponse> {
     try {
-      const tx = await this.contract.crossChainTransfer(destinationChainId, amount); // Replace with actual cross-chain function
+      const tx = await this.contract['crossChainTransfer'](destinationChainId, amount); // Replace with actual cross-chain function
       return tx;
     } catch (error) {
       console.error('Error during cross-chain transfer:', error);
@@ -58,7 +57,7 @@ export class CrossChainService {
 }
 
 // Usage Example
-const provider = new providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
+const provider = new JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
 const wallet = new Wallet('YOUR_PRIVATE_KEY', provider);
 
 const crossChainService = new CrossChainService({
@@ -72,10 +71,10 @@ async function exampleUsage() {
     const data = await crossChainService.getSomeData();
     console.log('Data from contract:', data);
 
-    const txResponse = await crossChainService.sendTransaction('0xRecipientAddress', utils.parseUnits('1.0', 18));
+    const txResponse = await crossChainService.sendTransaction('0xRecipientAddress', parseUnits('1.0', 18).toString());
     console.log('Transaction sent:', txResponse);
 
-    const crossChainTxResponse = await crossChainService.crossChainTransfer(2, utils.parseUnits('1.0', 18));
+    const crossChainTxResponse = await crossChainService.crossChainTransfer(2, parseUnits('1.0', 18).toString());
     console.log('Cross-chain transfer initiated:', crossChainTxResponse);
   } catch (error) {
     console.error('Error during example usage:', error);

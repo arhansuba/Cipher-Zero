@@ -1,14 +1,14 @@
-// frontend/src/components/CrossChainBridge.ts
+// frontend/src/components/CrossChainBridge.tsx
 
 import React, { useState } from 'react';
-import { Contract, providers, Wallet } from '@thetalabs/theta-js';
+import { Contract } from '@thetalabs/theta-js';
 import { ethers } from 'ethers';
 import { BridgeContractABI, BridgeContractAddress } from '../config/BridgeConfig';
-
-
+import * as thetajs from 'thetajs'; // Import the 'thetajs' library
+const thetajs = require("@thetalabs/theta-js");
 // Define the type for the component props
 interface CrossChainBridgeProps {
-    thetaWallet: Wallet; // Wallet for Theta transactions
+    thetaWallet: any; // Adjust based on actual type of Wallet from @thetalabs/theta-js
     otherWallet: ethers.Wallet; // Wallet for the other blockchain
 }
 
@@ -19,11 +19,11 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ thetaWallet, otherW
     const [transactionId, setTransactionId] = useState<string | null>(null);
 
     // Initialize Theta provider and contract
-    const thetaProvider = new providers.HttpProvider('https://theta-testnet.api.theta.network'); // Use mainnet URL in production
+    const thetaProvider = new thetajs.providers.HttpProvider('https://theta-testnet.api.theta.network'); // Use mainnet URL in production
     const thetaBridgeContract = new Contract(BridgeContractAddress, BridgeContractABI, thetaProvider) as any;
 
     // Initialize Ethereum provider and contract
-    const otherProvider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'); // Replace with actual provider
+    const otherProvider = new ethers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'); // Replace with actual provider
     const otherBridgeContract = new ethers.Contract(BridgeContractAddress, BridgeContractABI, otherProvider);
 
     // Handle amount change
@@ -55,7 +55,7 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ thetaWallet, otherW
             // Transfer from the other blockchain
             const otherTx = await otherWallet.sendTransaction({
                 to: BridgeContractAddress,
-                value: ethers.utils.parseUnits(amount.toString(), 'ether'),
+                value: ethers.parseUnits(amount.toString(), 'ether'), // Ensure utils is correctly imported
             });
 
             await otherTx.wait(); // Wait for the transaction to be mined

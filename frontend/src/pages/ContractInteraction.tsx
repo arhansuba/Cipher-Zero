@@ -7,7 +7,7 @@ const ContractInteraction = () => {
   const [params, setParams] = useState('');
   const [result, setResult] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/contract', { functionName, params });

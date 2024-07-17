@@ -1,6 +1,8 @@
 // NotificationService.js
 
 class NotificationService {
+    notifications: { id: string; message: any; type: string; }[];
+    subscribers: ((notifications: { id: string; message: any; type: string; }[]) => void)[];
     constructor() {
       this.notifications = [];
       this.subscribers = [];

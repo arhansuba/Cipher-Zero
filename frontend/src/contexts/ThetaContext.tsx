@@ -1,12 +1,11 @@
-// src/contexts/ThetaContext.tsx
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { contractConfig } from '../config/contractConfig';
+import { networkConfigs } from '../config/NetworkConfig'; // Make sure to create this file
 
 // Define the shape of the context state
 interface ThetaContextType {
-  provider: ethers.providers.JsonRpcProvider | null;
+  provider: ethers.JsonRpcProvider | null;
   signer: ethers.Signer | null;
   contract: ethers.Contract | null;
   initializeTheta: () => Promise<void>;
@@ -17,7 +16,7 @@ const ThetaContext = createContext<ThetaContextType | undefined>(undefined);
 
 // Context provider component
 export const ThetaProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider | null>(null);
+  const [provider, setProvider] = useState<ethers.JsonRpcProvider | null>(null);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
 

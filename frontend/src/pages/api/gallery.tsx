@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { GalleryView } from "../views";
+//import { GalleryView } from "../views";
 import React from "react";
+import GalleryView from "../views/GalleryView";
 
 // Define the props interface if needed. Replace `any` with a more specific type.
 interface GalleryProps {
@@ -16,7 +17,7 @@ const Gallery: NextPage<GalleryProps> = (props: GalleryProps) => {
         <meta name="description" content="File Transfer Gallery" />
       </Head>
       <main>
-        <GalleryView />
+        <GalleryView apiUrl={""} />
       </main>
     </>
   );

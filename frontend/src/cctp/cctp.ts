@@ -10,7 +10,7 @@ import {
 } from "@wormhole-foundation/sdk";
 import evm from "@wormhole-foundation/sdk/evm";
 
-import { SignerStuff, getSigner, waitForRelay } from "./helpers/helpers";
+import { SignerStuff, getSigner, waitForRelay } from "../helpers/helpers";
 
 // Initialize Wormhole for the desired network and supported platforms
 async function initializeWormhole(): Promise<Wormhole<Network>> {
