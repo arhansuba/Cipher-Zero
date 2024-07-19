@@ -91,16 +91,16 @@ contract MultiSigWallet {
         _;
     }
 
-    /// @dev Fallback function allows to deposit ether.
-    function()
-        payable
+    // Receive function to handle plain Ether transfers (no data)
     receive() external payable {
-        if (msg.value > 0)
-            Deposit(msg.sender, msg.value);
+        require(msg.value > 0, "No Ether sent");
+        emit Deposit(msg.sender, msg.value);
     }
-        if (msg.value > 0)
-            Deposit(msg.sender, msg.value);
-    }
+
+    // Fallback function to handle Ether transfers with data or unknown function calls
+    fallback() external payable {
+        require(msg.value > 0, "No Ether sent");
+        emit Deposit(msg.sender, msg.value);
 
     /*
      * Public functions

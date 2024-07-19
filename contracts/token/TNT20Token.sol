@@ -54,7 +54,7 @@ contract TNT20 is ERC20, AccessControl, Pausable {
      * @param amount The amount of tokens to mint.
      */
     function mint(address receiver, uint256 amount) external onlyRole(MINTER_ROLE) whenNotPaused {
-        require(Math.add(totalSupply(), amount) <= mintingCap, "TNT20: Minting cap exceeded");
+        require(totalSupply() + amount <= mintingCap, "TNT20: Minting cap exceeded");
         _mint(receiver, amount);
         emit Mint(receiver, amount);
     }

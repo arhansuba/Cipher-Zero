@@ -1,0 +1,31 @@
+# Theta Subchain configuration
+genesis:
+  hash: "<YOUR_GENESIS_HASH>"
+p2p:
+  # If the two validators are running on different machines, please make sure to configure firewall settings of the validators so 
+  # the 121001 port of this node is open to all other validators.
+  port: 12101
+
+  # If the two validators are running on different machines, in the following line please change 127.0.0.1 to the actual IP address 
+  # of the first validator. It is recommended to include the ip_address:p2p_port of ALL the other validators in the seeds list, separated by commas.
+  seeds: 127.0.0.1:12100
+rpc:
+  enabled: true
+  port: 16901
+log:
+  levels: "*:info"
+  #levels: "*:debug"
+consensus:
+  minBlockInterval: 2
+subchain:
+  mainchainEthRpcURL: "http://localhost:18888/rpc"
+  subchainEthRpcURL: "http://localhost:19988/rpc"
+  chainRegistrarOnMainchain: "0x01Cb3B1D61E8E833FbC520370d02477e0f07a405"
+  mainchainTFuelTB: "0x9747904F58bb8a83B9060fDF90d2A4CEDd63F840"
+  mainchainTNT20TB: "0x5DeEDCB2ba97d59b00240506151BbC9cc86f014c"
+  mainchainTNT721TB: "0x2364DDB56E9A98E016B5D3d372f648fCEA30c06C"
+  mainchainTNT1155TB: "0x6A75D986911ECdDb2BF1a866Cfc0A33c9Ece1B32"
+  updateInterval: 3000
+  # use the numerical EVM chainID for <YOUR_EVM_chainID> below, e.g. 360998877 
+  chainID: <YOUR_EVM_chainID>
+

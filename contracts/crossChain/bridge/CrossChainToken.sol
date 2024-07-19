@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
@@ -9,18 +8,19 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "./IWormhole.sol";
 import "./WormholeBridge.sol";
+
 /**
  * @title CrossChainToken
  * @dev A token that supports cross-chain transfers using Wormhole.
  */
-contract CrossChainToken is ERC20, AccessControl, Pausable {
+contract CrossChainToken is ERC20, ERC20Pausable, AccessControl {
     using Math for uint256;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     IWormhole public wormhole;
-    address public wormholeBridge;
+    WormholeBridge public wormholeBridge;
     address public wormholeTokenBridge;
 
     constructor(
@@ -35,7 +35,7 @@ contract CrossChainToken is ERC20, AccessControl, Pausable {
         _grantRole(PAUSER_ROLE, msg.sender);
 
         wormhole = IWormhole(_wormhole);
-        wormholeBridge = _wormholeBridge;
+        wormholeBridge = WormholeBridge(_wormholeBridge);
         wormholeTokenBridge = _wormholeTokenBridge;
     }
 
@@ -51,8 +51,8 @@ contract CrossChainToken is ERC20, AccessControl, Pausable {
         _unpause();
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override {
-        super._beforeTokenTransfer(from, to, amount);
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal (ERC20, ERC20Pausable) {
+        _beforeTokenTransfer(from, to, amount);
     }
 
     // Function to bridge tokens to another chain
@@ -70,7 +70,7 @@ contract CrossChainToken is ERC20, AccessControl, Pausable {
         });
 
         // Send message to Wormhole
-        wormholeBridge.sendMessage(message);
+        
     }
 
     // Function to receive bridged tokens
