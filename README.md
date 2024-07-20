@@ -15,46 +15,62 @@ Frontend: JavaScript (React)
 Privacy: zkSync
 Storage and Delivery: Theta Network
 
-
-                                                            +-------------+
-                                                                                      |             |
-                                                                                      |  User       |
-                                                                                      |  Interface  |
-                                                                                      |             |
-                                                                                      +------+------+
-                                                                                             |
-                                                                                             |
-                                                                                             |
-                                                                               +-------------+-------------+
-                                                                               |                           |
-                                                                               |      Frontend             |
-                                                                               |                           |
-                                                                               |                           |
-                                +-------------------------+                    |  - React Components       |
-                                |        Smart            |                    |  - Services               |
-+------------+       +---------->  Contracts & zkSync     +------------------->|  - BitTorrent Lib         |
-|            |       |          |    - Solidity          |                    +-------------+-------------+
-|            +-------+          |    - zkSNARK           |                                  |
-|   User     |       |          |                        |                                  |
-| Interface  |       |          |                        |                                  |
-|            +-------+          +------------------------+                                  |
-|            |       |                                                                               +---+----------------+------+---------------+
-|            |       |                     +----------------+                      +-------------+   |   |                |      |               |
-|            +-------+                     |   Cross-Chain   +--------------------->|    Theta    |   |   | Security       |      |   Storage     |
-|            |       +--------------------->   (Wormhole)    |                     | Integration |   |   | - zkSNARK      |      |   - Theta     |
-+------------+                           |   Integration   |                     |             |   |   | - Audit        |      |   - BitTorrent |
-                                         |                |                     |             |   |   |   - zkSync     |      |               |
-                                         +----------------+                     +-------------+   |   |                  |      |               |
-                                                                                                   |   +------------------+      +---------------+
-                                                                                                   |
-                                                                                                   |
-                                                                                                   +---------------------------------------------+
-                                                                                                                     |            |
-                                                                                                                     |   Backend  |
-                                                                                                                     |            |
-                                                                                                                     +------------+
-                                                                                                                     - Node.js
-                                                                                                                     - APIs
+Architecture Overview
+Below is a visual representation of the architecture and connections within BitTheta Secure:
++-------------+
+|             |
+|  User       |
+|  Interface  |
+|             |
++------+------+
+       |
+       |
+       |
++------+------+
+|  Frontend   |
+|             |
+|  - React Components       |
+|  - Services               |
+|  - BitTorrent Lib         |
++------+------+
+       |
+       |
+       |
++------+------+
+|   Smart      |
+|  Contracts & |
+|   zkSync     |
+|             |
+|  - Solidity |
+|  - zkSNARK  |
++------+------+
+       |
+       |
+       |
++------+------+
+|   Cross-Chain|
+|   (Wormhole) |
+|  Integration |
++------+------+
+       |
+       |
+       |
++------+------+
+|    Theta     |
+|  Integration |
+|  - zkSNARK   |
+|  - Audit     |
+|  - zkSync    |
++------+------+
+       |
+       |
+       |
++------+------+
+|  Backend     |
+|             |
+|  - Node.js   |
+|  - APIs      |
++-------------+
 
 
 Contributing
