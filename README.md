@@ -1,6 +1,8 @@
 
 # BitTheta Secure
 https://devpost.com/software/bitthetasecure
+https://www.youtube.com/watch?v=P-d1CoY9GNk
+https://www.canva.com/design/DAGLaeWRN98/lc0pffqpKdOWzi98Ti39JQ/edit?utm_content=DAGLaeWRN98&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 # Description
 BitTheta Secure is a decentralized platform for secure file, media, and message transfer. This platform combines zkSync for privacy-preserving transactions and Theta Network for decentralized storage and content delivery. The aim is to create a secure and efficient way for users to share and transfer data without exposing their IP addresses or other sensitive information. Uses wormhole and zkSNARK.
 
