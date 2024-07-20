@@ -53,7 +53,7 @@ contract InteroperabilityManager is AccessControl, Pausable {
         IERC20(token).transferFrom(msg.sender, address(this), amount);
 
         // Prepare Wormhole message
-        IWormhole.Message memory message = IWormhole.Message({
+        Message memory message = Message({
             token: token,
             amount: amount,
             destinationChainId: destinationChainId,
@@ -61,7 +61,7 @@ contract InteroperabilityManager is AccessControl, Pausable {
         });
 
         // Send message to Wormhole
-        wormhole.sendMessage(message);
+       // wormhole.sendMessage(message);
 
         emit CrossChainMessageSent(destinationChainId, token, amount, destinationAddress);
     }
