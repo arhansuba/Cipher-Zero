@@ -1,9 +1,9 @@
 # bitthetasecure
-#BitTheta Secure
-#Description
+# BitTheta Secure
+# Description
 BitTheta Secure is a decentralized platform for secure file, media, and message transfer. This platform combines zkSync for privacy-preserving transactions and Theta Network for decentralized storage and content delivery. The aim is to create a secure and efficient way for users to share and transfer data without exposing their IP addresses or other sensitive information. Uses wormhole and zkSNARK.
 
-#Key Features
+# Key Features
 Privacy-Preserving Transactions: Utilize zkSync to ensure transactions are private and secure, preventing IP address exposure.
 Decentralized Storage and Delivery: Leverage Theta EdgeCloud for efficient and decentralized content storage and delivery.
 Encrypted Messaging: Implement secure messaging functionality to enable private communication.
@@ -14,17 +14,17 @@ Backend: JavaScript
 Frontend: JavaScript (React)
 Privacy: zkSync
 Storage and Delivery: Theta Network
-#BitTheta Secure: Phase 1 and Beyond
+# BitTheta Secure: Phase 1 and Beyond
 
-#Current Phase:
+# Current Phase:
 
 BitTheta Secure is currently in its initial phase, focusing on delivering a robust decentralized platform for secure file, media, and message transfer. This phase includes integrating key technologies such as zkSync for privacy-preserving transactions and Theta Network for decentralized storage and content delivery. The platform is designed to ensure secure and efficient data sharing, protecting user privacy while leveraging decentralized technologies.
 
-#Future Vision:
+# Future Vision:
 
 Looking ahead, BitTheta Secure aims to evolve into a more integrated and expansive blockchain solution. Here’s how:
 
-#Blockchain Integration:
+# Blockchain Integration:
 
 Transition to a Blockchain: In the future, BitTheta Secure envisions becoming a standalone blockchain or a subchain of the Theta Network. This transition would enhance the platform’s capabilities and scalability, allowing it to handle larger volumes of transactions and data with increased efficiency and security.
 Custom Protocol Development: The evolution may include developing a custom protocol that leverages the strengths of existing technologies while addressing unique requirements of the BitTheta ecosystem.
@@ -43,7 +43,7 @@ Innovative Solutions: The platform will continue to innovate, integrating cuttin
 By focusing on these strategic goals, BitTheta Secure aims to create a secure, efficient, and scalable platform that meets the evolving needs of its users while contributing to the broader blockchain ecosystem.
 
 
-#Architecture Overview
+# Architecture Overview
 Below is a visual representation of the architecture and connections within BitTheta Secure:
 
 
@@ -108,10 +108,10 @@ Below is a visual representation of the architecture and connections within BitT
 
 
 
-#Contributing
+# Contributing
 Contributions are welcome! Please read the contributing guidelines for more information.
 
-#License
+# License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 By organizing the content in this way, the README provides a clear and comprehensive overview of the project, its structure, and how to get started. Let me know if there's anything else you'd like to add!
