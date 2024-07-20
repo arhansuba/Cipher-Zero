@@ -16,6 +16,47 @@ Privacy: zkSync
 Storage and Delivery: Theta Network
 
 
+                                                            +-------------+
+                                                                                      |             |
+                                                                                      |  User       |
+                                                                                      |  Interface  |
+                                                                                      |             |
+                                                                                      +------+------+
+                                                                                             |
+                                                                                             |
+                                                                                             |
+                                                                               +-------------+-------------+
+                                                                               |                           |
+                                                                               |      Frontend             |
+                                                                               |                           |
+                                                                               |                           |
+                                +-------------------------+                    |  - React Components       |
+                                |        Smart            |                    |  - Services               |
++------------+       +---------->  Contracts & zkSync     +------------------->|  - BitTorrent Lib         |
+|            |       |          |    - Solidity          |                    +-------------+-------------+
+|            +-------+          |    - zkSNARK           |                                  |
+|   User     |       |          |                        |                                  |
+| Interface  |       |          |                        |                                  |
+|            +-------+          +------------------------+                                  |
+|            |       |                                                                               +---+----------------+------+---------------+
+|            |       |                     +----------------+                      +-------------+   |   |                |      |               |
+|            +-------+                     |   Cross-Chain   +--------------------->|    Theta    |   |   | Security       |      |   Storage     |
+|            |       +--------------------->   (Wormhole)    |                     | Integration |   |   | - zkSNARK      |      |   - Theta     |
++------------+                           |   Integration   |                     |             |   |   | - Audit        |      |   - BitTorrent |
+                                         |                |                     |             |   |   |   - zkSync     |      |               |
+                                         +----------------+                     +-------------+   |   |                  |      |               |
+                                                                                                   |   +------------------+      +---------------+
+                                                                                                   |
+                                                                                                   |
+                                                                                                   +---------------------------------------------+
+                                                                                                                     |            |
+                                                                                                                     |   Backend  |
+                                                                                                                     |            |
+                                                                                                                     +------------+
+                                                                                                                     - Node.js
+                                                                                                                     - APIs
+
+
 Contributing
 Contributions are welcome! Please read the contributing guidelines for more information.
 
