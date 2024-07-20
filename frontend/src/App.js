@@ -23,7 +23,25 @@ import './styles/components.css';
 
 // Creating Redux store with middleware
 const store = createStore(rootReducer, applyMiddleware(thunk));
+import { uploadFile } from './apiHelper';
 
+function App() {
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    try {
+      const response = await uploadFile(file);
+      console.log('File uploaded successfully:', response.data);
+    } catch (error) {
+      console.error('File upload failed:', error);
+    }
+  };
+
+  return (
+    <div className="App">
+      <input type="file" onChange={handleFileUpload} />
+    </div>
+  );
+}
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
