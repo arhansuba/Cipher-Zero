@@ -2,6 +2,22 @@
 
 import axios from 'axios';
 
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+
+export const uploadFile = (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return axios.post(`${API_URL}/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+// Add other API methods as needed
+
 // zkSync API Helper Functions
 const zkSyncAPIBase = 'https://api.zksync.io/api/v0.2';
 
