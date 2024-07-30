@@ -38,6 +38,10 @@ Below is a high-level representation of the BitTheta Secure architecture and its
        |
        v
 
+
+
+
+
        
 +------+------+
 |   Frontend  |
@@ -48,6 +52,10 @@ Below is a high-level representation of the BitTheta Secure architecture and its
        |
        v
 
+
+
+
+
        
 +------+------+
 |   Smart     |
@@ -57,6 +65,10 @@ Below is a high-level representation of the BitTheta Secure architecture and its
        |
        v
 
+
+
+
+
        
 +------+------+
 | Cross-Chain |
@@ -65,6 +77,10 @@ Below is a high-level representation of the BitTheta Secure architecture and its
        |
        v
 
+
+
+
+
        
 +------+------+
 | Theta       |
@@ -72,6 +88,10 @@ Below is a high-level representation of the BitTheta Secure architecture and its
 +------+------+
        |
        v
+
+
+
+
 
 
        
