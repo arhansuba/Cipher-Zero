@@ -1,8 +1,11 @@
 
 # BitTheta Secure
-[Devpost Project Page] https://devpost.com/software/bitthetasecure
-[YouTube Presentation] https://www.youtube.com/watch?v=P-d1CoY9GNk
-[Canva Presentation] https://www.canva.com/design/DAGLaeWRN98/lc0pffqpKdOWzi98Ti39JQ/edit?utm_content=DAGLaeWRN98&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+[Devpost Project Page]: https://rb.gy/n085tq
+
+
+[YouTube Presentation]: https://rb.gy/dvmv80
+
+[Canva Presentation]: https://rb.gy/y5keyi
 
 
 # Description
