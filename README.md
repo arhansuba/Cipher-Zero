@@ -37,6 +37,8 @@ Below is a high-level representation of the BitTheta Secure architecture and its
 +------+------+
        |
        v
+
+       
 +------+------+
 |   Frontend  |
 | - React     |
@@ -45,6 +47,8 @@ Below is a high-level representation of the BitTheta Secure architecture and its
 +------+------+
        |
        v
+
+       
 +------+------+
 |   Smart     |
 | Contracts & |
@@ -52,18 +56,25 @@ Below is a high-level representation of the BitTheta Secure architecture and its
 +------+------+
        |
        v
+
+       
 +------+------+
 | Cross-Chain |
 | (Wormhole)  |
 +------+------+
        |
        v
+
+       
 +------+------+
 | Theta       |
 | Integration |
 +------+------+
        |
        v
+
+
+       
 +------+------+
 |   Backend   |
 | - Node.js   |
