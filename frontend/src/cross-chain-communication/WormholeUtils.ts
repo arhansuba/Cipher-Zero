@@ -60,7 +60,7 @@ export class WormholeUtils {
     nonce: number
   ): Promise<ethers.TransactionResponse> {
     try {
-      const bridgeContract = this.getWormholeBridgeContract(fromChainId).connect(this.wallet);
+      const bridgeContract = this.getWormholeBridgeContract(fromChainId).connect(this.wallet) as ethers.Contract;
       
       // Convert message to bytes
       const messageBytes = ethers.toUtf8Bytes(message);
@@ -80,7 +80,7 @@ export class WormholeUtils {
       const relayerContract = this.getWormholeRelayerContract(chainId).connect(this.wallet);
       
       // Use a generic method call (replace 'getMessage' with the actual method name from your ABI)
-      const message = await relayerContract['getMessage'](messageId);
+      const message = await (relayerContract as ethers.Contract)['getMessage'](messageId);
       
       // Process the message (custom logic here)
       console.log('Received message:', ethers.toUtf8String(message));

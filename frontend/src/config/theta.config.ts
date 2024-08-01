@@ -61,7 +61,7 @@ export const getWallet = (privateKey: string, network?: string) => {
     // Your implementation here
 };
 
-export const getExplorerUrl = (network) => {
+export const getExplorerUrl = (network: any) => {
     // Your implementation here
 };
 

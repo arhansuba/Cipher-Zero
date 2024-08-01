@@ -35,7 +35,7 @@ const ContentDelivery: React.FC<ContentDeliveryProps> = ({ videoId }) => {
         const infoResponse = await StreamingService.getStreamInfo(response.streamId);
         console.log('Stream info:', infoResponse);
       } catch (err) {
-        setError(`Failed to start or fetch stream: ${err.message}`);
+        setError(`Failed to start or fetch stream: ${(err as Error).message}`);
       }
     };
 

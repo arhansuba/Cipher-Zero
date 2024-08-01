@@ -5,11 +5,7 @@ export interface NetworkConfig {
   explorerUrl: string;
 }
 
-// Define a type for API configurations
-export interface ApiConfig {
-  baseUrl: string;
-  timeout: number;
-}
+
 
 // Define a type for contract configurations
 export interface ContractConfig {
@@ -37,16 +33,12 @@ export const networkConfigs: Record<string, NetworkConfig> = {
   },
 };
 
-// API configurations
-export const apiConfig: ApiConfig = {
-  baseUrl: 'https://api.yourproject.com',
-  timeout: 10000, // 10 seconds timeout
-};
+
 
 // Contract addresses for Wormhole and Theta contracts
 export const contractConfig: ContractConfig = {
-  wormholeBridgeContractAddress: '0xYourWormholeBridgeContractAddress',
-  thetaContractAddress: '0xYourThetaContractAddress',
+  wormholeBridgeContractAddress: '0xYourWormholeBridgeContractAddress',// add addres
+  thetaContractAddress: '0xYourThetaContractAddress',// add address
 };
 
 // General project settings

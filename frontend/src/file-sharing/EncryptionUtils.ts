@@ -28,9 +28,3 @@ export function generateKeyAndIV(): { key: Buffer, iv: Buffer } {
     };
 }
 
-// Example usage (not included in final file):
-// const { key, iv } = generateKeyAndIV();
-// const data = Buffer.from('Hello, world!');
-// const encryptedData = encryptFile(data, key, iv);
-// const decryptedData = decryptFile(encryptedData, key, iv);
-// console.log('Decrypted data:', decryptedData.toString());

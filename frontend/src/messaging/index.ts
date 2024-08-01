@@ -1,7 +1,8 @@
 import { signSendWait, wormhole, VAA, SignAndSendSigner, PayloadLiteral } from "@wormhole-foundation/sdk";
 import solana from "@wormhole-foundation/sdk/solana";
-import { getSigner } from "../helpers/index.js";
+//import { getSigner } from "../helpers/index.js";
 import { ChainContext } from "@wormhole-foundation/sdk";
+import { getSigner } from "@/cctp";
 
 // Define the types
 export type ChainContextType = ChainContext<"Testnet", "Solana", "Solana">;

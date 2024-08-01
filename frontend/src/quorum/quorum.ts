@@ -105,7 +105,7 @@ function getStats(vals: bigint[]): Stats {
   
   const max = vals[vals.length - 1];
   const min = vals[0];
-  const sum = vals.reduce((acc, v) => acc + v, 0n);
+  const sum = vals.reduce((acc, v) => acc + v, BigInt(0));
   const mean = sum / BigInt(vals.length);
   const quorum = vals[Math.floor(vals.length * 2 / 3)];
   const delta = max - min;
