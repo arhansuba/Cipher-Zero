@@ -9,12 +9,12 @@ class NotificationService {
     }
   
     // Subscribe to notifications
-    subscribe(callback) {
+    subscribe(callback: (notifications: { id: string; message: any; type: string; }[]) => void) {
       this.subscribers.push(callback);
     }
   
     // Unsubscribe from notifications
-    unsubscribe(callback) {
+    unsubscribe(callback: (notifications: { id: string; message: any; type: string; }[]) => void) {
       this.subscribers = this.subscribers.filter(sub => sub !== callback);
     }
   
@@ -24,7 +24,7 @@ class NotificationService {
     }
   
     // Add a notification
-    addNotification(message, type = 'info') {
+    addNotification(message: any, type = 'info') {
       const notification = {
         id: Date.now().toString(),
         message,
@@ -35,7 +35,7 @@ class NotificationService {
     }
   
     // Remove a notification by id
-    removeNotification(id) {
+    removeNotification(id: string) {
       this.notifications = this.notifications.filter(notification => notification.id !== id);
       this.notify();
     }

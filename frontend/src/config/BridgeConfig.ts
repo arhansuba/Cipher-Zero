@@ -33,12 +33,12 @@ export const BridgeContractABI: ABI = [
   // Add more ABI entries as needed
 ];
 
-export const BridgeContractAddress: string = '0xYourContractAddressHere';
+export const BridgeContractAddress: string = '0xYourContractAddressHere'; // Replace with your actual contract address
 
 // Example configuration object
 export const bridgeConfig: BridgeConfig = {
   chainId: 1, // Mainnet chain ID
-  rpcUrl: 'https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID',
+  rpcUrl: 'https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID',// add your Infura project ID
   contractAddress: BridgeContractAddress,
   tokenAddress: '0xYourTokenAddressHere',
   bridgeContractABI: BridgeContractABI,

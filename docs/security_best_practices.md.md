@@ -1,4 +1,4 @@
-Best Practices for Implementing Security Features
+# Best Practices for Implementing Security Features
 Introduction
 This document outlines best practices for implementing security features in BitTheta Secure to ensure data protection and system integrity.
 

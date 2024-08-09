@@ -34,7 +34,7 @@ class StreamingService {
       });
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to start stream: ${error.message}`);
+      throw new Error(`Failed to start stream: ${(error as any).message}`);
     }
   }
 
@@ -47,7 +47,7 @@ class StreamingService {
           'Content-Type': 'application/json',
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to stop stream: ${error.message}`);
     }
   }
@@ -63,7 +63,7 @@ class StreamingService {
         params: { streamId },
       });
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to get stream info: ${error.message}`);
     }
   }

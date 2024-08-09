@@ -19,7 +19,7 @@ const injected = new InjectedConnector({
 const rpcUrl = process.env.REACT_APP_RPC_URL_1 || ''; // Provide a default value if the environment variable is undefined
 const walletconnect = new WalletConnectConnector({
   rpc: { 1: rpcUrl }, // Add RPC URLs for the networks you want to support
-  bridge: 'https://bridge.walletconnect.org',
+  bridge: 'https://bridge.walletconnect.org', // return these link placeholder
   qrcode: true,
 });
 

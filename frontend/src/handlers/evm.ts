@@ -27,7 +27,7 @@ async function deploy(chain: string) {
                         .split("Deployed to: ")[1]
                         .split("\n")[0]
                         .trim();
-                    const emittedVAAs = []; // Resets the emittedVAAs
+                    const emittedVAAs: never[] = []; // Resets the emittedVAAs
                     fs.writeFileSync(
                         `./deployinfo/${chain}.deploy.json`,
                         JSON.stringify({ address: deploymentAddress, vaas: emittedVAAs }, null, 4)

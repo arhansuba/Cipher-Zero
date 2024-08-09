@@ -1,6 +1,7 @@
+import { getSigner } from "@/cctp";
 import { encoding, signSendWait, wormhole } from "@wormhole-foundation/sdk";
 import solana from "@wormhole-foundation/sdk/solana";
-import { getSigner } from "../helpers/index.js";
+//import { getSigner } from "../helpers/index.js";
 
 (async function () {
 

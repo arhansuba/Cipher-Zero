@@ -34,7 +34,7 @@ const FileShare: React.FC<FileShareProps> = () => {
             await encryptAndSaveFile(file.path, 'encryptedFile.enc');
             message.success('File encrypted and saved successfully.');
         } catch (error) {
-            message.error('Error encrypting file: ' + error.message);
+            message.error('Error encrypting file: ' + (error as Error).message);
         } finally {
             setIsEncrypting(false);
         }
@@ -57,7 +57,7 @@ const FileShare: React.FC<FileShareProps> = () => {
             await decryptAndSaveFile(encryptedFile.path, keyIvFilePath, 'decryptedFile.txt');
             message.success('File decrypted and saved successfully.');
         } catch (error) {
-            message.error('Error decrypting file: ' + error.message);
+            message.error('Error decrypting file: ' + (error as Error).message);
         } finally {
             setIsDecrypting(false);
         }
@@ -90,7 +90,7 @@ const FileShare: React.FC<FileShareProps> = () => {
                     <Upload
                         beforeUpload={() => false}
                         showUploadList={false}
-                        onChange={(info) => setKeyIvFile(info.file)}
+                        onChange={(info: { file: React.SetStateAction<File | null>; }) => setKeyIvFile(info.file)}
                     >
                         <Button icon={<FileSearchOutlined />}>Select Key/IV File</Button>
                     </Upload>

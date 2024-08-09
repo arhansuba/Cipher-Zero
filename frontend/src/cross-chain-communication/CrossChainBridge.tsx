@@ -5,7 +5,8 @@ import { Contract } from '@thetalabs/theta-js';
 import { ethers } from 'ethers';
 import { BridgeContractABI, BridgeContractAddress } from '../config/BridgeConfig';
 import * as thetajs from 'thetajs'; // Import the 'thetajs' library
-const thetajs = require("@thetalabs/theta-js");
+
+const thetajs = require('@thetalabs/theta-js');
 // Define the type for the component props
 interface CrossChainBridgeProps {
     thetaWallet: any; // Adjust based on actual type of Wallet from @thetalabs/theta-js
