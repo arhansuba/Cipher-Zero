@@ -3,11 +3,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity >=0.5.4 <0.9.0;
 
-/**
- * @title Owned
- * @notice Basic contract to define an owner.
- * @author Julien Niset - <julien@argent.xyz>
- */
 contract Owned {
 
     // The owner

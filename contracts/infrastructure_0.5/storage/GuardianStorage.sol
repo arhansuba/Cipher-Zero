@@ -5,14 +5,7 @@ pragma solidity 0.8.26;
 import "./Storage.sol";
 import "../../infrastructure/storage/IGuardianStorage.sol";
 
-/**
- * @title GuardianStorage
- * @notice Contract storing the state of wallets related to guardians and lock.
- * The contract only defines basic setters and getters with no logic. Only modules authorised
- * for a wallet can modify its state.
- * @author Julien Niset - <julien@argent.im>
- * @author Olivier Van Den Biggelaar - <olivier@argent.im>
- */
+
 contract GuardianStorage is IGuardianStorage, Storage {
 
     struct GuardianStorageConfig {

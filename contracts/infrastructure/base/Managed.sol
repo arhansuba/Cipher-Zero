@@ -4,11 +4,6 @@ pragma solidity ^0.8.26;
 
 import "./Owned.sol";
 
-/**
- * @title Managed
- * @notice Basic contract that defines a set of managers. Only the owner can add/remove managers.
- * @author Julien Niset, Olivier VDB - <julien@argent.xyz>, <olivier@argent.xyz>
- */
 contract Managed is Owned {
 
     // The managers

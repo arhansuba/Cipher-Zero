@@ -7,12 +7,7 @@ import "./common/Utils.sol";
 import "./common/BaseModule.sol";
 import "../wallet/IWallet.sol";
 
-/**
- * @title SecurityManager
- * @notice Abstract module implementing the key security features of the wallet: guardians, lock and recovery.
- * @author Julien Niset - <julien@argent.xyz>
- * @author Olivier Van Den Biggelaar - <olivier@argent.xyz>
- */
+
 abstract contract SecurityManager is BaseModule {
 
     struct RecoveryConfig {

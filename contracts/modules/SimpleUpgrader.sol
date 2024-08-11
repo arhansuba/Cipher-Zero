@@ -7,11 +7,6 @@ import "./common/IModule.sol";
 import "../infrastructure/IModuleRegistry.sol";
 import "../wallet/IWallet.sol";
 
-/**
- * @title SimpleUpgrader
- * @notice Temporary module used to add/remove other modules.
- * @author Olivier VDB - <olivier@argent.xyz>, Julien Niset - <julien@argent.xyz>
- */
 contract SimpleUpgrader is IModule {
 
     IModuleRegistry private registry;

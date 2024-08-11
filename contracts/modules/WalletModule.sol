@@ -9,11 +9,7 @@ import "./RelayerManager.sol";
 import "./SecurityManager.sol";
 import "./TransactionManager.sol";
 
-/**
- * @title ArgentModule
- * @notice Single module for the Argent wallet.
- * @author Julien Niset - <julien@argent.xyz>
- */
+
 contract WalletModule is BaseModule, RelayerManager, SecurityManager, TransactionManager {
 
     bytes32 constant public NAME = "WalletModule";

@@ -8,11 +8,7 @@ import "argent-trustlists/contracts/DappRegistry.sol";
 import "../storage/ITransferStorage.sol";
 import "../../modules/common/Utils.sol";
 
-/**
- * @title MultiCallHelper
- * @notice Helper contract that can be used to check in 1 call if and why a sequence of transactions is authorised to be executed by a wallet.
- * @author Julien Niset - <julien@argent.xyz>
- */
+
 contract MultiCallHelper {
 
     uint256 private constant MAX_UINT = type(uint256).max;

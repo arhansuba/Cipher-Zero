@@ -9,11 +9,7 @@ import "./common/BaseModule.sol";
 import "./common/SimpleOracle.sol";
 import "../infrastructure/storage/IGuardianStorage.sol";
 
-/**
- * @title RelayerManager
- * @notice Abstract Module to execute transactions signed by ETH-less accounts and sent by a relayer.
- * @author Julien Niset <julien@argent.xyz>, Olivier VDB <olivier@argent.xyz>
- */
+
 abstract contract RelayerManager is BaseModule, SimpleOracle {
 
     uint256 constant internal BLOCKBOUND = 10000;

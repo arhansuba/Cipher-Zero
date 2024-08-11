@@ -1,11 +1,7 @@
 
 pragma solidity ^0.5.4;
 
-/**
- * @title MultiSig
- * @notice Simple MultiSig using off-chain signing.
- * @author Julien Niset - <julien@argent.xyz>
- */
+
 contract MultiSigWallet {
 
     uint constant public MAX_OWNER_COUNT = 10;
