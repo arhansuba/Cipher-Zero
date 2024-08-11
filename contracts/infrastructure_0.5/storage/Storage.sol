@@ -4,11 +4,7 @@ pragma solidity ^0.5.4;
 
 import "../../wallet/IWallet.sol";
 
-/**
- * @title Storage
- * @notice Base contract for the storage of a wallet.
- * @author Julien Niset - <julien@argent.xyz>
- */
+
 contract Storage {
 
     /**

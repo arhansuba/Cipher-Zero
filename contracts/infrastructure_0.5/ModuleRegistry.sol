@@ -4,12 +4,7 @@ pragma solidity ^0.5.4;
 import "../infrastructure/base/Owned.sol";
 import "../../lib_0.5/other/ERC20.sol";
 
-/**
- * @title ModuleRegistry
- * @notice Registry of authorised modules.
- * Modules must be registered before they can be authorised on a wallet.
- * @author Julien Niset - <julien@argent.im>
- */
+
 contract ModuleRegistry is Owned {
 
     mapping (address => Info) internal modules;

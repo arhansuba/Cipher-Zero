@@ -5,13 +5,7 @@ pragma solidity ^0.5.4;
 import "./Storage.sol";
 import "../../infrastructure/storage/ITransferStorage.sol";
 
-/**
- * @title TransferStorage
- * @notice Contract storing the state of wallets related to transfers (limit and whitelist).
- * The contract only defines basic setters and getters with no logic. Only modules authorised
- * for a wallet can modify its state.
- * @author Julien Niset - <julien@argent.im>
- */
+
 contract TransferStorage is ITransferStorage, Storage {
 
     // wallet specific storage

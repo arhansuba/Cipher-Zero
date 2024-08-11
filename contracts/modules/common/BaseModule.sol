@@ -10,11 +10,7 @@ import "../../infrastructure/storage/ITransferStorage.sol";
 import "./IModule.sol";
 import "../../../lib_0.5/other/ERC20.sol";
 
-/**
- * @title BaseModule
- * @notice Base Module contract that contains methods common to all Modules.
- * @author Julien Niset - <julien@argent.xyz>, Olivier VDB - <olivier@argent.xyz>
- */
+
 abstract contract BaseModule is IModule {
 
     // Empty calldata

@@ -8,11 +8,7 @@ import "./common/Utils.sol";
 import "./common/BaseModule.sol";
 import "../../lib_0.5/other/ERC20.sol";
 
-/**
- * @title TransactionManager
- * @notice Module to execute transactions in sequence to e.g. transfer tokens (ETH, ERC20, ERC721, ERC1155) or call third-party contracts.
- * @author Julien Niset - <julien@argent.xyz>
- */
+
 abstract contract TransactionManager is BaseModule {
 
     // Static calls

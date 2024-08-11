@@ -9,11 +9,7 @@ import "./base/Managed.sol";
 import "./storage/IGuardianStorage.sol";
 import "../modules/common/Utils.sol";
 
-/**
- * @title WalletFactory
- * @notice The WalletFactory contract creates and assigns wallets to accounts.
- * @author Julien Niset, Olivier VDB - <julien@argent.xyz>, <olivier@argent.xyz>
- */
+
 contract WalletFactory is Managed {
 
     address constant internal ETH_TOKEN = address(0);
