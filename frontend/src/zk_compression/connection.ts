@@ -1,16 +1,52 @@
-import { RPC_ENDPOINT } from "./constants";
+import { RPC_ENDPOINT } from './constants';
+import { StatelessRPC } from '@lightprotocol/stateless.js'; // Import the specific type if available
 
-const stateless = require("@lightprotocol/stateless.js");
+// Create a connection instance using the Stateless RPC library
+const connection = StatelessRPC.createRpc(RPC_ENDPOINT, RPC_ENDPOINT);
 
-const connection = stateless.createRpc(RPC_ENDPOINT, RPC_ENDPOINT);
+/**
+ * Retrieves the current blockchain slot.
+ * @returns The current slot number as a Promise.
+ * @throws Error if the slot retrieval fails.
+ */
+export const getSlot = async (): Promise<number> => {
+    try {
+        const slot = await connection.getSlot();
+        console.log(`Current Slot: ${slot}`);
+        return slot;
+    } catch (error) {
+        console.error('Failed to retrieve slot:', error);
+        throw new Error('Slot retrieval failed');
+    }
+};
 
-async function main() {
-  let slot = await connection.getSlot();
-  console.log(slot);
+/**
+ * Retrieves the health status of the indexer for a specific slot.
+ * @param slot - The slot number for which to check the indexer health.
+ * @returns The health status as a Promise.
+ * @throws Error if the indexer health check fails.
+ */
+export const getIndexerHealth = async (slot: number): Promise<string> => {
+    try {
+        const health = await connection.getIndexerHealth(slot);
+        console.log(`Indexer Health for Slot ${slot}: ${health}`);
+        return health;
+    } catch (error) {
+        console.error('Failed to retrieve indexer health:', error);
+        throw new Error('Indexer health check failed');
+    }
+};
 
-  let health = await connection.getIndexerHealth(slot);
-  console.log(health);
-  // "Ok"
-}
+/**
+ * Main function to demonstrate retrieving slot and indexer health.
+ */
+const main = async () => {
+    try {
+        const slot = await getSlot();
+        await getIndexerHealth(slot);
+    } catch (error) {
+        console.error('Error in main execution:', error);
+    }
+};
 
 main();

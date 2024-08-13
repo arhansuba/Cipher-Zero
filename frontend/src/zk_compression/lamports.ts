@@ -1,57 +1,48 @@
-import { confirmTx } from "@lightprotocol/stateless.js";
 import dotenv from "dotenv";
-
-dotenv.config();
-
-/// Compressing SOL
-const {
+import {
   LightSystemProgram,
   buildAndSignTx,
   createRpc,
   defaultTestStateTreeAccounts,
   sendAndConfirmTx,
-} = require("@lightprotocol/stateless.js");
+  confirmTx,
+} from "@lightprotocol/stateless.js";
+import { ComputeBudgetProgram, Keypair } from "@solana/web3.js";
 
-const { ComputeBudgetProgram, Keypair } = require("@solana/web3.js");
+dotenv.config();
 
 const fromKeypair = Keypair.generate();
 
-/// Localnet, expects `light test-validator` to be running:
-const connection = createRpc();
-
-/// Uncomment to use Devnet:
-// const connection = createRpc(
-//   RPC_ENDPOINT,
-//   RPC_ENDPOINT
-// );
+// Set up connection to Solana network
+const connection = createRpc();  // Localnet by default; adjust for other networks as needed
 
 (async () => {
-  /// airdrop lamports to pay tx fees
-  await confirmTx(
-    connection,
-    await connection.requestAirdrop(fromKeypair.publicKey, 10e9)
-  );
+  try {
+    // Airdrop lamports to cover transaction fees
+    await confirmTx(connection, await connection.requestAirdrop(fromKeypair.publicKey, 10e9));
 
-  /// Fetch latest blockhash
-  const { blockhash } = await connection.getLatestBlockhash();
+    // Fetch the latest blockhash
+    const { blockhash } = await connection.getLatestBlockhash();
 
-  /// Compress lamports to self
-  const ix = await LightSystemProgram.compress({
-    payer: fromKeypair.publicKey,
-    toAddress: fromKeypair.publicKey,
-    lamports: 1_000_000_000,
-    outputStateTree: defaultTestStateTreeAccounts().merkleTree,
-  });
+    // Create instruction to compress lamports to self
+    const compressInstruction = LightSystemProgram.compress({
+      payer: fromKeypair.publicKey,
+      toAddress: fromKeypair.publicKey,
+      lamports: 1_000_000_000,
+      outputStateTree: defaultTestStateTreeAccounts().merkleTree,
+    });
 
-  /// Create a VersionedTransaction and sign it
-  const tx = buildAndSignTx(
-    [ComputeBudgetProgram.setComputeUnitLimit({ units: 1_200_000 }), ix],
-    fromKeypair,
-    blockhash,
-    []
-  );
+    // Build and sign the transaction with a compute budget program to increase unit limit
+    const transaction = buildAndSignTx(
+      [ComputeBudgetProgram.setComputeUnitLimit({ units: 1_200_000 }), compressInstruction],
+      fromKeypair,
+      blockhash
+    );
 
-  /// Confirm
-  const txId = await sendAndConfirmTx(connection, tx);
-  console.log("Transaction Signature:", txId);
+    // Send the transaction and confirm its success
+    const transactionId = await sendAndConfirmTx(connection, transaction);
+    console.log("Transaction Signature:", transactionId);
+  } catch (error) {
+    console.error("Error during transaction:", error);
+  }
 })();
