@@ -126,14 +126,6 @@ Long-Term Goals:
 Universal Asset Transfer Protocol: BitTheta Secure aspires to become the leading protocol for transferring a diverse range of on-chain assets, including data, coins, stocks, and currencies, facilitating seamless and secure interactions across multiple asset classes.
 Innovative Solutions: Continually advancing with cutting-edge technologies to address emerging challenges and drive innovation in the blockchain space.
 
-# Theta Blockchain
-Theta Blockchain is a decentralized network that provides scalable and efficient solutions for content delivery and decentralized storage. Key aspects include:
-
-EdgeCloud: Facilitates decentralized content delivery.
-Decentralized Storage: Ensures data is stored and managed in a distributed manner.
-BitTheta Secure utilizes Theta Blockchain for its decentralized storage and content delivery needs, ensuring that data is handled securely and efficiently.
-
-
 
 # Alvara Protocol
 Alvara Protocol provides a framework for creating and managing decentralized, tokenized investment funds using the Basket Token Standard (ERC-BTS). It includes:
