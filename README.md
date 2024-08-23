@@ -10,7 +10,11 @@ Canva Presentation: https://www.canva.com/design/DAGLaeWRN98/lc0pffqpKdOWzi98Ti3
 
 
 # Description
-BitTheta Secure is a state-of-the-art decentralized platform designed for secure and efficient transfers of various types of assets. From on-chain data and files to cryptocurrencies, stocks, and currencies, BitTheta Secure combines zkSync for privacy-preserving transactions and the Theta Network for decentralized storage and content delivery. Our platform ensures secure, anonymous transfers and interactions across a wide range of asset types.
+Cipher Zero Protocol is a decentralized platform designed to facilitate secure, private, and efficient transfers of various types of digital assets. By integrating zkSync for privacy-preserving transactions and utilizing advanced encryption and decentralized storage technologies, Cipher Zero Protocol offers a comprehensive solution for managing and transferring assets while ensuring user confidentiality and data integrity. The platform combines cutting-edge cryptographic techniques with decentralized storage and cross-chain interoperability to create a robust and user-centric asset management system.
+Vision:
+
+Cipher Zero Protocol addresses the need for a secure and privacy-focused solution for transferring and managing diverse digital assets. In an era where data breaches and privacy concerns are prevalent, Cipher Zero Protocol ensures that users can transfer files, cryptocurrencies, and other assets securely and privately, leveraging advanced cryptographic methods and decentralized technologies.
+
 
 # Key Features
 Privacy-Preserving Transactions: Utilizes zkSync to ensure transactions remain confidential, protecting user data and preventing IP address exposure.
