@@ -8,7 +8,7 @@
     "@lightprotocol/stateless.js": "^0.9.0",
     "@lightprotocol/zk-compression-cli": "^0.7.0",
     "@solana/wallet-adapter-react": "^0.15.35",
-    "@solana/web3.js": "^1.95.2",
+    "@solana/web3.js": "^1.95.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

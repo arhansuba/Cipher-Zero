@@ -57,15 +57,6 @@
            |
            |
            v
-+----------+----------+
-|    Theta            |
-|---------------------|
-| - Theta Network     |
-| - Decentralized Storage|
-| - Video Streaming   |
-+----------+----------+
-           |
-           |
            v
 +----------+----------+
 |     zkSync          |
