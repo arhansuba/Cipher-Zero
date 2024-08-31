@@ -3,7 +3,7 @@ import algorand from "@wormhole-foundation/sdk/algorand";
 import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
 import { inspect } from "util";
-import { getSigner } from "../helpers/index";
+import { getSigner } from "../../helpers/index";
 
 // Function to create a wrapped token
 export default async function createWrapped() {

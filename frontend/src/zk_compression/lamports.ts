@@ -33,8 +33,8 @@ const connection = createRpc();  // Localnet by default; adjust for other networ
     });
 
     // Build and sign the transaction with a compute budget program to increase unit limit
-    const transaction = buildAndSignTx(
-      [ComputeBudgetProgram.setComputeUnitLimit({ units: 1_200_000 }), compressInstruction],
+    const transaction = await buildAndSignTx(
+      [ComputeBudgetProgram.setComputeUnitLimit({ units: 1_200_000 }), await compressInstruction],
       fromKeypair,
       blockhash
     );

@@ -16,7 +16,7 @@ import {
   import solana from "@wormhole-foundation/sdk/solana";
   import sui from "@wormhole-foundation/sdk/sui";
   
-  import { SignerStuff, getSigner, waitLog } from "../helpers/helpers.js";
+  import { SignerStuff, getSigner, waitLog } from "../../helpers/helpers.js";
   
   // Function to initialize Wormhole and get the chain context
   async function initializeWormhole(): Promise<Wormhole<Network>> {

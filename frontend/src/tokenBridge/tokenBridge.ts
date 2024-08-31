@@ -16,7 +16,7 @@ import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
 import sui from "@wormhole-foundation/sdk/sui";
 
-import { SignerStuff, getSigner, waitLog } from "../helpers/helpers.js";
+import { SignerStuff, getSigner, waitLog } from "../../helpers/helpers.js";
 
 (async function () {
   // Initialize the Wormhole object with the Testnet configuration

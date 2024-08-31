@@ -1,6 +1,6 @@
 import { Wormhole, Network, Signer, Chain, TransactionId, CircleTransfer, amount, wormhole } from "@wormhole-foundation/sdk";
 import evm from "@wormhole-foundation/sdk/evm";
-import { getSigner, waitForRelay } from "../helpers/helpers";
+import { getSigner, waitForRelay } from "../../helpers/helpers";
 import { cctpTransfer, completeTransfer } from "./cctp";
 
 // Export types and functions for use in other parts of the project

@@ -1,9 +1,7 @@
 // zk_compression/compression.ts
-
-import { getZKConnection } from './connection';
-import { ZK_COMPRESSION_PROGRAM_ID } from './constants';
 import { formatDataForCompression, validateData } from './utils';
 import { CompressionRequest, CompressionResult } from './types';
+import { getZKCompressorConnection } from './zkConnection'; // Add this import
 
 /**
  * Compresses the provided data using the ZK Compression API.
@@ -19,9 +17,8 @@ export const compressData = async (data: any): Promise<CompressionResult> => {
 
     // Format the data for compression
     const formattedData = formatDataForCompression(data);
-
     // Establish connection with the ZK Compression API
-    const connection = getZKConnection();
+    const connection = await getZKCompressorConnection();
 
     // Create the compression request
     const compressionRequest: CompressionRequest = {
@@ -52,7 +49,7 @@ export const compressData = async (data: any): Promise<CompressionResult> => {
  * @throws Error if the decompression process fails.
  */
 export const decompressData = async (compressedData: string): Promise<any> => {
-    const connection = getZKConnection();
+    const connection = await getZKCompressorConnection();
 
     try {
         // Decompress the data using the connected API

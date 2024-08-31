@@ -12,15 +12,12 @@ import {
   circle,
   routes,
   wormhole,
+  Signer
 } from "@wormhole-foundation/sdk";
 import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
-//import { TokenId } from "@wormhole-foundation/sdk/dist/chain";
-import thetajs from '@thetalabs/theta-js';
 
 require('isomorphic-fetch');
-
-const { Wallet, providers: { HttpProvider }, Contract, ContractFactory, networks: { ChainIds } } = thetajs;
 
 // Configuration
 const ADMIN_WALLET_ADDRESS = "<ADMIN_WALLET_ADDRESS>";
@@ -30,18 +27,12 @@ const ADMIN_PRIVATE_KEY = "<ADMIN_PRIVATE_KEY>";
 const USER1_PRIVATE_KEY = "<USER1_PRIVATE_KEY>";
 const USER2_PRIVATE_KEY = "<USER2_PRIVATE_KEY>";
 
-// Theta.js setup
-const thetaProvider = new HttpProvider(ChainIds.Privatenet);
-const walletAdmin = new Wallet(ADMIN_PRIVATE_KEY, thetaProvider);
-const walletUser1 = new Wallet(USER1_PRIVATE_KEY, thetaProvider);
-const walletUser2 = new Wallet(USER2_PRIVATE_KEY, thetaProvider);
-
 // Helper function to get a signer for a given chain
 async function getSigner(chain: ChainContext<Network, Chain>) {
   // This is a placeholder. In a real scenario, you'd need to implement
   // logic to return the appropriate signer for the given chain.
   return {
-    signer: walletAdmin, // Using admin wallet as an example
+    signer: ADMIN_PRIVATE_KEY, // Using admin private key as the signer
     address: ADMIN_WALLET_ADDRESS,
   };
 }
@@ -105,13 +96,12 @@ async function main() {
     const quote = await bestRoute.quote(validated.params);
     if (!quote.success) throw quote.error;
     console.log("Transfer quote:", quote);
-
     // Initiate the transfer
-    const receipt = await bestRoute.initiate(sender.signer, quote, transferParams);
+    const receipt = await bestRoute.initiate(sender.signer as unknown as Signer, quote, transferParams);
     console.log("Initiated transfer with receipt:", receipt);
 
     // Track the transfer until it is completed
-    await checkAndComplete(bestRoute, receiver.signer, receipt);
+    await checkAndComplete(bestRoute, receiver.signer as unknown as Signer, receipt);
 
   } catch (error) {
     console.error("Error processing transfer:", error);

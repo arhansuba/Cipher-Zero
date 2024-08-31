@@ -1,8 +1,21 @@
-import { RPC_ENDPOINT } from './constants';
-import { StatelessRPC } from '@lightprotocol/stateless.js'; // Import the specific type if available
-
+import {
+    LightSystemProgram,
+    Rpc,
+    confirmTx,
+    createRpc,
+  } from "@lightprotocol/stateless.js";
+  import { createMint, mintTo, transfer } from "@lightprotocol/compressed-token";
+  import { Keypair } from "@solana/web3.js";
+  
+  const payer = Keypair.generate();
+  const tokenRecipient = Keypair.generate();
+  
+  /// Helius exposes Solana and compression RPC endpoints through a single URL
+  const RPC_ENDPOINT = "https://devnet.helius-rpc.com?api-key=<api_key>";
+  const COMPRESSION_RPC_ENDPOINT = RPC_ENDPOINT;
+  const connection: Rpc = createRpc(RPC_ENDPOINT, COMPRESSION_RPC_ENDPOINT)
 // Create a connection instance using the Stateless RPC library
-const connection = StatelessRPC.createRpc(RPC_ENDPOINT, RPC_ENDPOINT);
+//const connection = StatelessRpc.createRpc(RPC_ENDPOINT, RPC_ENDPOINT);
 
 /**
  * Retrieves the current blockchain slot.
@@ -26,10 +39,10 @@ export const getSlot = async (): Promise<number> => {
  * @returns The health status as a Promise.
  * @throws Error if the indexer health check fails.
  */
-export const getIndexerHealth = async (slot: number): Promise<string> => {
+export const getIndexerHealth = async (): Promise<string> => {
     try {
-        const health = await connection.getIndexerHealth(slot);
-        console.log(`Indexer Health for Slot ${slot}: ${health}`);
+        const health = await connection.getIndexerHealth();
+        console.log(`Indexer Health: ${health}`);
         return health;
     } catch (error) {
         console.error('Failed to retrieve indexer health:', error);
@@ -43,7 +56,7 @@ export const getIndexerHealth = async (slot: number): Promise<string> => {
 const main = async () => {
     try {
         const slot = await getSlot();
-        await getIndexerHealth(slot);
+        await getIndexerHealth();
     } catch (error) {
         console.error('Error in main execution:', error);
     }
