@@ -1,6 +1,5 @@
-
-
-pragma solidity ^0.5.4;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
 import "../infrastructure/base/Owned.sol";
 import "../../lib_0.5/other/ERC20.sol";
 

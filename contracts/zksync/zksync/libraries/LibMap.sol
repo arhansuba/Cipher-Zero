@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-/// @notice Library for storage of packed unsigned integers.
-/// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibMap.sol)
+
 library LibMap {
     /// @dev A uint32 map in storage.
     struct Uint32Map {
