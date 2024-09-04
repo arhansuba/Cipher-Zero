@@ -1,5 +1,5 @@
 
-# BitTheta Secure
+
 Devpost Project Page: https://devpost.com/software/bitthetasecure
 
 
